@@ -1015,6 +1015,83 @@ MonoBehaviour:
   canShoot: 1
   shootColdown: 2
   ammo: {fileID: 0}
+--- !u!1 &951732598
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 951732599}
+  - component: {fileID: 951732600}
+  m_Layer: 0
+  m_Name: HitBox
+  m_TagString: BossHitbox
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &951732599
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 951732598}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.78, y: -0.34, z: 0}
+  m_LocalScale: {x: 4.5, y: 3, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1001905557}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &951732600
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 951732598}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &997492736
 GameObject:
   m_ObjectHideFlags: 0
@@ -1163,11 +1240,11 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1001905555}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 10
   m_LinearDrag: 10
   m_AngularDrag: 0.05
   m_GravityScale: 3
@@ -2146,7 +2223,7 @@ Transform:
   m_GameObject: {fileID: 1366951003}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -78.68, y: -0.84, z: 0}
+  m_LocalPosition: {x: -95.03, y: -0.78, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3544,7 +3621,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2477531362775953186, guid: 5b51f4a405856e24b8416888590f98ed, type: 3}
       propertyPath: rayRange
-      value: 10
+      value: 20.07
       objectReference: {fileID: 0}
     - target: {fileID: 2477531362775953186, guid: 5b51f4a405856e24b8416888590f98ed, type: 3}
       propertyPath: coneDirection
@@ -3664,6 +3741,10 @@ PrefabInstance:
       value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 5126755580791060611, guid: feee699cce459894db57e523ca35d2ef, type: 3}
+      propertyPath: isGrounded
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5126755580791060611, guid: feee699cce459894db57e523ca35d2ef, type: 3}
       propertyPath: detectionRadius
       value: 3.29
       objectReference: {fileID: 0}
@@ -3740,6 +3821,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8243745904871271731, guid: feee699cce459894db57e523ca35d2ef, type: 3}
       insertIndex: 2
       addedObject: {fileID: 1285547781}
+    - targetCorrespondingSourceObject: {fileID: 8243745904871271731, guid: feee699cce459894db57e523ca35d2ef, type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 951732599}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2366692532418210303, guid: feee699cce459894db57e523ca35d2ef, type: 3}
       insertIndex: -1

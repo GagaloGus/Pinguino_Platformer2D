@@ -111,6 +111,14 @@ public class PlayerMove : MonoBehaviour
         isGrounded = hit.collider != null;
     }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.tag == "BossHitbox")
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {

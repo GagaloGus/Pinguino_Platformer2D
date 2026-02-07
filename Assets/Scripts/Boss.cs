@@ -4,27 +4,51 @@ using UnityEngine;
 
 public class Boss : Enemy
 {
-    GameObject sprite;
-    Animator animator;
-    public bool spawned;
+    public GameObject sprite, hitBox, shield;
+    public Animator animator;
+    public bool spawned,hitBoxsetter;
     void Start()
     {
         player = FindAnyObjectByType<PlayerMove>().gameObject;
         rb = GetComponent<Rigidbody2D>();
         objDetector = transform.GetChild(0).gameObject;
-        seen = transform.GetChild(1).gameObject;
-        lost = transform.GetChild(2).gameObject;
-        sprite = transform.GetChild(3).gameObject;
+        lost = transform.GetChild(1).gameObject;
+        seen = transform.GetChild(2).gameObject;
+        hitBox = transform.GetChild(3).gameObject;
+        sprite = transform.GetChild(4).gameObject;
+        shield = sprite.transform.GetChild(0).gameObject;
         animator = sprite.GetComponent<Animator>();
         spawned = false;
+        hitBoxsetter = false;
     }
     protected override void Update()
     {
-        restoreRotation();
+        //restoreRotation();
+
+        if(hitBoxsetter == true)
+        {
+            hitBox.SetActive(true);
+        }
+        else
+        {
+            hitBox.SetActive(false);
+        }
 
         if (IsTargetInCone(player.transform) && spawned == true)
         {
-            Move(player.transform.position);
+            float dist = Vector2.Distance(transform.position, player.transform.position);
+
+            if (dist > 3.3f && animator.GetBool("canAttack") == false)
+            {
+                Move(player.transform.position);
+                seen.SetActive(true);
+                lost.SetActive(false);
+            }
+            else
+            {
+                animator.SetBool("canWalk", false);
+                animator.SetBool("canAttack", true);
+            }
         }
 
         if (IsTargetInCone(player.transform) == false && canPatrol && PatrolPoints.Count > 0)
@@ -98,12 +122,12 @@ public class Boss : Enemy
         if (Mathf.Abs(transform.position.x - lastLoc.x) > 0.5f && canJump)
         {
             Move(lastLoc);
+            seen.SetActive(false);
+            lost.SetActive(true);
         }
         else
         {
             animator.SetBool("canWalk", false);
-            seen.SetActive(false);
-            lost.SetActive(true);
         }
 
         timeLeft -= Time.deltaTime;
@@ -113,6 +137,7 @@ public class Boss : Enemy
             timeLeft = 5f;
             canPatrol = true;
             lost.SetActive(false);
+            animator.SetBool("canWalk", false);
         }
     }
 
@@ -128,13 +153,15 @@ public class Boss : Enemy
             wasInside = true;
             timeLeft = 5f;
             lastLoc = player.transform.position;
-            seen.SetActive(true);
-            lost.SetActive(false);
+            if (!spawned)
+            {
+                animator.SetBool("spawn", true);
+            }
             return true;
         }
 
         // Detección por Cono
-        Vector3 baseDirection = Quaternion.Euler(0, 0, coneDirection) * transform.right;
+        Vector3 baseDirection = Quaternion.Euler(0, 0, coneDirection) * sprite.transform.right;
         float angleToTarget = Vector3.Angle(baseDirection, dirToTarget);
 
         if (angleToTarget < angle / 2.0f)
@@ -146,8 +173,6 @@ public class Boss : Enemy
                 wasInside = true;
                 timeLeft = 5f;
                 lastLoc = player.transform.position;
-                seen.SetActive(true);
-                lost.SetActive(false);
                 return true;
             }
         }
@@ -155,15 +180,18 @@ public class Boss : Enemy
 
         if (hitS != null)
         {
-            animator.SetBool("spawn", true);
-            if (dir == 1f)
+            if (!spawned)
+            {
+                animator.SetBool("spawn", true);
+            }
+            if (dir == 1f && spawned)
             {
                 coneDirection = 180;
                 sprite.GetComponent<SpriteRenderer>().flipX = false;
                 objDetector.transform.position = new Vector2(transform.position.x - 0.9f, transform.position.y + 1);
                 dir = -1f;
             }
-            else if (dir == -1f)
+            else if (dir == -1f && spawned)
             {
                 coneDirection = 0;
                 sprite.GetComponent<SpriteRenderer>().flipX = true;
@@ -180,36 +208,10 @@ public class Boss : Enemy
         return false;
     }
 
-    private void restoreRotation()
-    {
-        if (dir == 1f)
-        {
-            coneDirection = 180;
-            sprite.GetComponent<SpriteRenderer>().flipX = false;
-            objDetector.transform.position = new Vector2(transform.position.x - 0.9f, transform.position.y + 1);
-        }
-        else if (dir == -1f)
-        {
-            coneDirection = 0;
-            sprite.GetComponent<SpriteRenderer>().flipX = true;
-            objDetector.transform.position = new Vector2(transform.position.x + 0.9f, transform.position.y + 1);
-        }
-    }
-
-
-
     protected void OnDrawGizmos()
     {
         Vector2 enemyPoS = new Vector2(transform.position.x, transform.position.y - 1.8f);
         Gizmos.color = Color.red;
-        if (dir > 0f)
-        {
-            Gizmos.DrawRay(enemyPoS, Vector2.right * raycastDetection);
-        }
-        else
-        {
-            Gizmos.DrawRay(enemyPoS, Vector2.left * raycastDetection);
-        }
         Gizmos.DrawRay(enemyPoS, Vector2.down * raycastDetectionDown);
 
         Gizmos.color = Color.green;

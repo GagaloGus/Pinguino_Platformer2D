@@ -8,4 +8,15 @@ public class AnimEvents : MonoBehaviour
     {
         GetComponentInParent<Boss>().spawned = true;
     }
+
+    public void HitBoxAct()
+    {
+        GetComponentInParent<Boss>().hitBoxsetter = true;
+    }
+
+    public void HitBoxDesct()
+    {
+        GetComponentInParent<Boss>().hitBoxsetter = false;
+        GetComponentInParent<Boss>().animator.SetBool("canAttack", false);
+    }
 }
