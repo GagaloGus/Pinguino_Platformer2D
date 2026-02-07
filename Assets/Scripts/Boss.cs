@@ -24,41 +24,47 @@ public class Boss : Enemy
     protected override void Update()
     {
         //restoreRotation();
-
-        if(hitBoxsetter == true)
+        if (player.activeSelf)
         {
-            hitBox.SetActive(true);
-        }
-        else
-        {
-            hitBox.SetActive(false);
-        }
-
-        if (IsTargetInCone(player.transform) && spawned == true)
-        {
-            float dist = Vector2.Distance(transform.position, player.transform.position);
-
-            if (dist > 3.3f && animator.GetBool("canAttack") == false)
+            if(hitBoxsetter == true)
             {
-                Move(player.transform.position);
-                seen.SetActive(true);
-                lost.SetActive(false);
+                hitBox.SetActive(true);
             }
             else
             {
-                animator.SetBool("canWalk", false);
-                animator.SetBool("canAttack", true);
+                hitBox.SetActive(false);
+            }
+
+            if (IsTargetInCone(player.transform) && spawned == true)
+            {
+                float dist = Vector2.Distance(transform.position, player.transform.position);
+
+                if (dist > 3.3f && animator.GetBool("canAttack") == false)
+                {
+                    Move(player.transform.position);
+                    seen.SetActive(true);
+                    lost.SetActive(false);
+                }
+                else
+                {
+                    animator.SetBool("canWalk", false);
+                    animator.SetBool("canAttack", true);
+                }
+            }
+
+            if (IsTargetInCone(player.transform) == false && canPatrol && PatrolPoints.Count > 0)
+            {
+                Patrol();
+            }
+            if (IsTargetInCone(player.transform) == false && wasInside == true && spawned == true)
+            {
+                // LLama el método para que este objeto siga siguiendo al objetivo durante un tiempo (Como buscandolo)
+                Search();
             }
         }
-
-        if (IsTargetInCone(player.transform) == false && canPatrol && PatrolPoints.Count > 0)
+        else
         {
-            Patrol();
-        }
-        if (IsTargetInCone(player.transform) == false && wasInside == true && spawned == true)
-        {
-            // LLama el método para que este objeto siga siguiendo al objetivo durante un tiempo (Como buscandolo)
-            Search();
+            animator.SetBool("canWalk", false);
         }
     }
 
@@ -71,7 +77,7 @@ public class Boss : Enemy
             dir = 1f;
             sprite.GetComponent<SpriteRenderer>().flipX = true;
             // Cambia la ubicación del detector de obstaculos a la derecha
-            objDetector.transform.position = new Vector2(transform.position.x + 0.9f, transform.position.y + 1);
+            hitBox.transform.position = new Vector2(transform.position.x + 2.75f, transform.position.y);
             // Cambia la rotacion del campo de vision para que mire a su derecha
             coneDirection = 0f;
         }
@@ -83,7 +89,7 @@ public class Boss : Enemy
             dir = -1f;
             sprite.GetComponent<SpriteRenderer>().flipX = false;
             // Cambia la ubicación del detector de obstaculos a la izquierda
-            objDetector.transform.position = new Vector2(transform.position.x - 0.9f, transform.position.y + 1);
+            hitBox.transform.position = new Vector2(transform.position.x - 2.75f, transform.position.y);
             // Cambia la rotacion del campo de vision para que mire a su izquierda
             coneDirection = 180f;
         }
@@ -188,14 +194,14 @@ public class Boss : Enemy
             {
                 coneDirection = 180;
                 sprite.GetComponent<SpriteRenderer>().flipX = false;
-                objDetector.transform.position = new Vector2(transform.position.x - 0.9f, transform.position.y + 1);
+                hitBox.transform.position = new Vector2(transform.position.x - 2.75f, transform.position.y);
                 dir = -1f;
             }
             else if (dir == -1f && spawned)
             {
                 coneDirection = 0;
                 sprite.GetComponent<SpriteRenderer>().flipX = true;
-                objDetector.transform.position = new Vector2(transform.position.x + 0.9f, transform.position.y + 1);
+                hitBox.transform.position = new Vector2(transform.position.x + 2.75f, transform.position.y);
                 dir = 1f;
             }
         }
