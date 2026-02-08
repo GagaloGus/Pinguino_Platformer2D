@@ -9,8 +9,8 @@ public class GameManager : MonoBehaviour
 {
 
     public static GameManager instance;
-
     public GameObject Prefab_Explosion;
+    Animator PantallaCarga;
 
     [Header("Settings")]
     [Range(0, 1)] public float chancePlayLoadSound = 0.5f;
@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
         }
        
         highScore = PlayerPrefs.GetInt("HighScore", 0);
-
+        PantallaCarga = transform.Find("Canvas").Find("Pantalla carga").GetComponent<Animator>();
     }
 
     void Start()
@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         score = 0;
         gameState = GameState.Playing;
+        StartLevel();
     }
 
     public void AddScore(int points)
@@ -114,6 +115,42 @@ public class GameManager : MonoBehaviour
         kaput.localScale = localScale;
     }
 
+    public void StartLevel()
+    {
+        PantallaCarga.gameObject.SetActive(true);
+        PantallaCarga.SetInteger("state", 2);
+        AudioManager.instance.PlaySFX2D(MusicLibrary.instance.door_close_sfx);
+    }
+
+    public void ChangeSceneWithTransition(string sceneName)
+    {
+        AudioManager.instance.StopAll();
+        AudioManager.instance.PlaySFX2D(MusicLibrary.instance.door_open_sfx);
+
+        bool playLoadClip = Random.value < chancePlayLoadSound;
+        float clipLength = 0;
+        float waitTime = 0;
+
+        if (playLoadClip)
+        {
+            clipLength = AudioManager.instance.PlayRandomSFX2D(MusicLibrary.instance.level_load_sfxs).length;
+            waitTime = Mathf.Clamp(Random.Range(0.4f, 1f) * clipLength, 0, 8);
+        }
+        else
+        {
+            clipLength = MusicLibrary.instance.door_open_sfx.length;
+            waitTime = Random.Range(0.9f, 1.2f) * clipLength;
+        }
+
+        PantallaCarga.gameObject.SetActive(true);
+        PantallaCarga.SetInteger("state", 1);
+
+        CoolFunctions.InvokeDelayed(this, waitTime, () =>
+        {
+            ChangeScene(sceneName);
+        });
+    }
+
     public void ChangeScene(string sceneName)
     {
         StartCoroutine(ChangeAsyncScene(sceneName));
@@ -129,5 +166,9 @@ public class GameManager : MonoBehaviour
         {
             yield return null;
         }
+
+        StartLevel();
     }
+
+
 }

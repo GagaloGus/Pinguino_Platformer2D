@@ -228,8 +228,8 @@ MonoBehaviour:
   muteSfx: 0
   activeAudioSources: []
   audioPool: {fileID: 2608982549939349993}
-  volumeMusic: 0.44
-  volumeSFX: 0.632
+  volumeMusic: 0.326
+  volumeSFX: 0.321
 --- !u!114 &5085540492754293716
 MonoBehaviour:
   m_ObjectHideFlags: 0

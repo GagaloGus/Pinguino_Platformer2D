@@ -334,18 +334,23 @@ public class PlayerController : MonoBehaviour
         print($"Morio por: {killer.name}");
         Cam.follow = false;
         hasDied = true;
+        canMove = false;
 
         int dirX = (int)Mathf.Sign(transform.position.x - killer.transform.position.x);
         int multVel = 20;
         Vector2 bounceDir = new Vector2(dirX, 1f).normalized;
 
-        //Lanzar al player
+        //Quitar restricciones
         capsuleCollider.enabled = false;
         playerMoveState = PlayerMoveStates.Death;
+        rb.constraints = RigidbodyConstraints2D.None;
+
+        //Lanzar y rotar al player
         rb.velocity = bounceDir * multVel;
+        rb.angularVelocity = -3000;
         rb.gravityScale = gravityScale;
 
-        //Desatachar el casco y la espada
+        //Lanzar el casco y la espada
         animator.enabled = false;
         Casco.SetParent(transform.parent);
         Espada.SetParent(transform.parent);
@@ -356,8 +361,7 @@ public class PlayerController : MonoBehaviour
         Casco.GetComponent<Rigidbody2D>().velocity = new Vector2(dirX * 0.9f, 0.1f) * multVel;
         Espada.GetComponent<Rigidbody2D>().velocity = new Vector2(dirX * 0.1f, 0.9f) * multVel;
 
-        //Rotar al player
-        StartCoroutine(DeathCoroutine());
+
 
         //Audio
         AudioManager.instance.StopAll();
@@ -367,15 +371,6 @@ public class PlayerController : MonoBehaviour
         CoolFunctions.InvokeDelayed(this, clip.length - 0.15f, () => { UIManager.instance.ReloadScene(); });
     }
 
-    IEnumerator DeathCoroutine()
-    {
-        float rotAngle = 30;
-        while (true)
-        {
-            transform.RotateAround(CenterPos.position, Vector3.forward, rotAngle);
-            yield return null;
-        }
-    }
 
     public void AddForceToDir(Vector2 dir, float mult = 10, float frozenTime = 0.3f)
     {
