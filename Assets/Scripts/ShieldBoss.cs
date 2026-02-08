@@ -17,6 +17,7 @@ public class ShieldBoss : MonoBehaviour
         colliderCircle.enabled = false;
     }
 
+
     void Update()
     {
         if(spawn && appear)
@@ -32,6 +33,13 @@ public class ShieldBoss : MonoBehaviour
         if (destroy)
         {
             animator.SetBool("Destroy", true);
+        }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            animator.SetBool("Hit", true);
         }
     }
 

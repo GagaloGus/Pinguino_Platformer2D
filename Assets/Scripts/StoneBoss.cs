@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class StoneBoss : MonoBehaviour
 {
+    public GameObject Boss;
     private Animator animator;
     private CapsuleCollider2D collider;
-    public bool appear, destroy, hit, visible;
+    public bool appear, destroy, hit, visible =false;
     public float healthBase = 100, respawnTime = 20f;
     private float health;
     void Start()
@@ -16,6 +17,7 @@ public class StoneBoss : MonoBehaviour
         collider = GetComponent<CapsuleCollider2D>();
         collider.enabled = false;
         health = healthBase;
+        Boss = FindAnyObjectByType<Boss>().gameObject;
     }
     void Update()
     {
@@ -38,6 +40,7 @@ public class StoneBoss : MonoBehaviour
         {
             animator.SetBool("canDestroy", true);
             visible = false;
+            collider.enabled = false;
         }
     }
 
@@ -46,8 +49,18 @@ public class StoneBoss : MonoBehaviour
         yield return new WaitForSeconds(respawnTime);
         health = healthBase;
         appear = true;
+        Boss.GetComponent<Boss>().shield.GetComponent<ShieldBoss>().appear = true;
+        Boss.GetComponent<Boss>().canCheck = true;
+        Boss.GetComponent<Boss>().canBeHit = false;
     }
-
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            animator.SetBool("getHit", true);
+            health -= 25;
+        }
+    }
     void DisableAppear()
     {
         animator.SetBool("canAppear", false);

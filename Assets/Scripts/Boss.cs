@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class Boss : Enemy
 {
+    [Header("Boss Options")]
     public GameObject sprite, hitBox, shield;
     public Animator animator;
     public bool spawned,hitBoxsetter;
+    public bool canCheck, canBeHit = false;
+    public float healthBase = 5000f, health, attackDis = 4f;
+
+    [Header("Boss Stones")]
     public GameObject[] bossStones;
-    private bool canCheck;
     void Start()
     {
         player = FindAnyObjectByType<PlayerMove>().gameObject;
@@ -24,18 +28,18 @@ public class Boss : Enemy
         hitBoxsetter = false;
         bossStones = GameObject.FindGameObjectsWithTag("StoneBoss");
         canCheck = true;
+        health = healthBase;
     }
     protected override void Update()
     {
-        Debug.Log(bossStones[0].GetComponentInChildren<StoneBoss>().visible);
+        //Debug.Log(bossStones[0].GetComponentInChildren<StoneBoss>().visible);
 
-        /*if (canCheck)
+        if (canCheck && spawned)
         {
             CheckStones();
-        }*/
+        }
 
-        //restoreRotation();
-        if (player.activeSelf)
+        if (player.activeSelf && health > 0)
         {
             if(hitBoxsetter == true)
             {
@@ -46,15 +50,21 @@ public class Boss : Enemy
                 hitBox.SetActive(false);
             }
 
-            if (IsTargetInCone(player.transform) && spawned == true)
+            if (IsTargetInCone(player.transform) && spawned)
             {
                 float dist = Vector2.Distance(transform.position, player.transform.position);
 
-                if (dist > 3.3f && animator.GetBool("canAttack") == false)
+                if (dist > attackDis && animator.GetBool("canAttack") == false)
                 {
                     Move(player.transform.position);
                     seen.SetActive(true);
                     lost.SetActive(false);
+                }
+                else if (animator.GetBool("getHit"))
+                {
+                    spawned = false;
+                    animator.SetBool("canWalk", false);
+                    animator.SetBool("canAttack", false);
                 }
                 else
                 {
@@ -76,6 +86,17 @@ public class Boss : Enemy
         else
         {
             animator.SetBool("canWalk", false);
+        }
+
+        if (health <= 0)
+        {
+            animator.SetBool("death", true);
+            animator.SetBool("spawn", false);
+            shield.GetComponent<ShieldBoss>().destroy = true;
+            for (int i = 0; i < bossStones.Length; i++)
+            {
+                bossStones[i].transform.GetChild(0).gameObject.GetComponent<StoneBoss>().destroy = true;
+            }
         }
     }
 
@@ -228,26 +249,46 @@ public class Boss : Enemy
     public void CheckStones()
     {
         canCheck = false;
+        bool yaSeHizo = false;
         int count = 0;
         for (int i = 0; i < bossStones.Length; i++)
         {
             if (bossStones[i].GetComponentInChildren<StoneBoss>().visible)
             {
-                Debug.Log("Hola");
                 count++;
             }
         }
-        Debug.Log(count);
-        if (count == 0)
+        if (count == 0 && !yaSeHizo)
         {
             shield.GetComponent<ShieldBoss>().destroy = true;
-            Debug.Log("Respawn");
+            canBeHit = true;
             for (int i = 0; i < bossStones.Length; i++)
             {
                 bossStones[i].transform.GetChild(0).gameObject.GetComponent<StoneBoss>().StartCoroutine("Respawn");
             }
+            yaSeHizo = true;
         }
-        canCheck = true;
+        else
+        {
+            canCheck = true;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player") && canBeHit)
+        {
+            animator.SetBool("getHit", true);
+            health -= 100;
+            StartCoroutine("hitCooldown");
+        }
+    }
+
+    IEnumerator hitCooldown()
+    {
+        canBeHit = false;
+        yield return new WaitForSeconds(2f);
+        canBeHit = true;
     }
 
     protected void OnDrawGizmos()
