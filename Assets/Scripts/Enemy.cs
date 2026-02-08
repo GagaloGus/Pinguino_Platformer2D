@@ -36,7 +36,7 @@ public class Enemy : MonoBehaviour
             print("ay");
             AudioManager.instance.PlaySFX2D(MusicLibrary.instance.enemy_kill_sfx);
             AudioManager.instance.PlayRandomSFX2D(MusicLibrary.instance.enemy_death_sfxs);
-            GameManager.instance.CreateExplosion(transform);
+            GameManager.instance.CreateExplosion(transform, false);
             Destroy(gameObject);
         }
         else

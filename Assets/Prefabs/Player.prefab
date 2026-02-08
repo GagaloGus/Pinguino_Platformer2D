@@ -256,7 +256,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4441366211764120717}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -6.998, y: 14.001, z: 0}
   m_LocalScale: {x: 0.41, y: 0.41, z: 0.41}
   m_ConstrainProportionsScale: 1
@@ -325,7 +325,7 @@ MonoBehaviour:
   friction: 20
   slideVelRequired: 7
   localVel: {x: 0, y: 0}
-  YLevelDeath: -7.5
+  YLevelDeath: -9.42
   jumpForce: 12
   gravityScale: 3
   Snowball_bullet: {fileID: -8582091728229918381, guid: f4e7b497178d2cb409625e807b3b4dea, type: 3}

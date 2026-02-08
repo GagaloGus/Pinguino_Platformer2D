@@ -69,7 +69,6 @@ public class PlayerController : MonoBehaviour
     SpriteRenderer sprtRenderer;
     Animator animator;
     Transform SpawnBulletPosition, CenterPos, Casco, Espada;
-    cam Cam;
 
 
     private void Awake()
@@ -79,7 +78,6 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
         sprtRenderer = GetComponent<SpriteRenderer>();
-        Cam = FindObjectOfType<cam>();
 
         SpawnBulletPosition = transform.Find("spawnBall");
         CenterPos = transform.Find("center");
@@ -168,8 +166,9 @@ public class PlayerController : MonoBehaviour
             runTransitionSpeed * Time.deltaTime
         );
 
+        //Muerte si cae muy abajo
         if (transform.position.y < YLevelDeath)
-            transform.position = startPos;
+            Death("The void", Vector3.zero);
 
 
     }
@@ -319,7 +318,7 @@ public class PlayerController : MonoBehaviour
         life -= healthReduce;
         if (life <= 0)
         {
-            Death(hitObject);
+            Death(hitObject.name, hitObject.transform.position);
         }
         else
         {
@@ -329,14 +328,15 @@ public class PlayerController : MonoBehaviour
     }
 
     //El jugador ha muerto
-    public void Death(GameObject killer)
+    public void Death(string killer, Vector3 killerPos)
     {
-        print($"Morio por: {killer.name}");
-        Cam.follow = false;
+        print($"Morio por: {killer}");
+        CameraController.instance.followPlayer = false;
+        life = 0;
         hasDied = true;
         canMove = false;
 
-        int dirX = (int)Mathf.Sign(transform.position.x - killer.transform.position.x);
+        int dirX = (int)Mathf.Sign(transform.position.x - killerPos.x);
         int multVel = 20;
         Vector2 bounceDir = new Vector2(dirX, 1f).normalized;
 

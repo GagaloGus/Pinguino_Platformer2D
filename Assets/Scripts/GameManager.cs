@@ -103,14 +103,15 @@ public class GameManager : MonoBehaviour
         coins += amount;
     }
 
-    public void CreateExplosion(Transform objTransform)
+    public void CreateExplosion(Transform objTransform, bool playSound)
     {
-        CreateExplosion(objTransform.position, objTransform.localScale);
+        CreateExplosion(objTransform.position, objTransform.localScale, playSound);
     }
 
-    public void CreateExplosion(Vector3 position, Vector3 localScale)
+    public void CreateExplosion(Vector3 position, Vector3 localScale, bool playSound)
     {
         Transform kaput = Instantiate(Prefab_Explosion).transform;
+        AudioManager.instance.PlayRandomSFX2D(MusicLibrary.instance.explosion_sfxs);
         kaput.position = position;
         kaput.localScale = localScale;
     }

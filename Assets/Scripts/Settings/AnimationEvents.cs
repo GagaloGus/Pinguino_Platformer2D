@@ -13,4 +13,11 @@ public class AnimationEvents : MonoBehaviour
     {
         Destroy(gameObject);
     }
+
+    public void KaboomSelf()
+    {
+        AudioManager.instance.StopAllSFX();
+        GameManager.instance.CreateExplosion(transform, true);
+        Destroy(gameObject);
+    }
 }
