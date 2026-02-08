@@ -9,6 +9,12 @@ public class AnimEvents : MonoBehaviour
         GetComponentInParent<Boss>().spawned = true;
     }
 
+    public void shieldSpawn()
+    {
+        GetComponentInChildren<ShieldBoss>().spawn = true;
+        GetComponentInChildren<ShieldBoss>().appear = true;
+    }
+
     public void HitBoxAct()
     {
         GetComponentInParent<Boss>().hitBoxsetter = true;

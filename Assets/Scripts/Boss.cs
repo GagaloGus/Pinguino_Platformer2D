@@ -7,6 +7,7 @@ public class Boss : Enemy
     public GameObject sprite, hitBox, shield;
     public Animator animator;
     public bool spawned,hitBoxsetter;
+    public GameObject[] bossStones;
     void Start()
     {
         player = FindAnyObjectByType<PlayerMove>().gameObject;
@@ -20,6 +21,7 @@ public class Boss : Enemy
         animator = sprite.GetComponent<Animator>();
         spawned = false;
         hitBoxsetter = false;
+        bossStones = GameObject.FindGameObjectsWithTag("StoneBoss");
     }
     protected override void Update()
     {
@@ -212,6 +214,26 @@ public class Boss : Enemy
         }
         // Si no se cumple nada de lo anterior devuelve false
         return false;
+    }
+
+    public void CheckStones()
+    {
+        int count = 0;
+
+        for (int i = 0; i < bossStones.Length; i++)
+        {
+            bossStones[i].GetComponent<StoneBoss>().visible = true;
+            count++;
+        }
+
+        if (count == 0)
+        {
+            shield.GetComponent<ShieldBoss>().destroy = true;
+            for (int i = 0; i < bossStones.Length; i++)
+            {
+                bossStones[i].GetComponent<StoneBoss>().StartCoroutine("Respawn");
+            }
+        }
     }
 
     protected void OnDrawGizmos()
