@@ -258,6 +258,7 @@ public class Boss : Enemy
                 count++;
             }
         }
+        canBeHit = false;
         if (count == 0 && !yaSeHizo)
         {
             shield.GetComponent<ShieldBoss>().destroy = true;
