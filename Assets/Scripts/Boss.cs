@@ -8,6 +8,7 @@ public class Boss : Enemy
     public Animator animator;
     public bool spawned,hitBoxsetter;
     public GameObject[] bossStones;
+    private bool canCheck;
     void Start()
     {
         player = FindAnyObjectByType<PlayerMove>().gameObject;
@@ -22,9 +23,17 @@ public class Boss : Enemy
         spawned = false;
         hitBoxsetter = false;
         bossStones = GameObject.FindGameObjectsWithTag("StoneBoss");
+        canCheck = true;
     }
     protected override void Update()
     {
+        Debug.Log(bossStones[0].GetComponentInChildren<StoneBoss>().visible);
+
+        /*if (canCheck)
+        {
+            CheckStones();
+        }*/
+
         //restoreRotation();
         if (player.activeSelf)
         {
@@ -218,22 +227,27 @@ public class Boss : Enemy
 
     public void CheckStones()
     {
+        canCheck = false;
         int count = 0;
-
         for (int i = 0; i < bossStones.Length; i++)
         {
-            bossStones[i].GetComponent<StoneBoss>().visible = true;
-            count++;
+            if (bossStones[i].GetComponentInChildren<StoneBoss>().visible)
+            {
+                Debug.Log("Hola");
+                count++;
+            }
         }
-
+        Debug.Log(count);
         if (count == 0)
         {
             shield.GetComponent<ShieldBoss>().destroy = true;
+            Debug.Log("Respawn");
             for (int i = 0; i < bossStones.Length; i++)
             {
-                bossStones[i].GetComponent<StoneBoss>().StartCoroutine("Respawn");
+                bossStones[i].transform.GetChild(0).gameObject.GetComponent<StoneBoss>().StartCoroutine("Respawn");
             }
         }
+        canCheck = true;
     }
 
     protected void OnDrawGizmos()

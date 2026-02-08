@@ -15,12 +15,12 @@ public class StoneBoss : MonoBehaviour
         animator = GetComponent<Animator>();
         collider = GetComponent<CapsuleCollider2D>();
         collider.enabled = false;
-        visible = false;
         health = healthBase;
     }
     void Update()
     {
-        if(health <= 0)
+
+        if (health <= 0)
         {
             destroy = true;
         }
