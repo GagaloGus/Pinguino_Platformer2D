@@ -11,17 +11,21 @@ public class UIManager : MonoBehaviour
 
     Animator PantallaCarga;
 
-    [Header("Lives UI")]
-    public Image[] hearts;
-    public Sprite fullHeart;
-    public Sprite emptyHeart;
+    public GameObject menu;
 
     private void Awake()
     {
         if (instance == null)
+        {
             instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
         else
+        {
             Destroy(gameObject);
+            return;
+        }
+        ;
         //PantallaCarga = transform.Find("Pantalla carga").GetComponent<Animator>();
     }
 
@@ -41,6 +45,21 @@ public class UIManager : MonoBehaviour
             AudioManager.instance.PlayAmbientMusic(MusicLibrary.instance.level3_song);
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (GameManager.instance.gameState == GameState.Playing)
+            {
+                onPauseButton();
+            }
+            else if (GameManager.instance.gameState == GameState.Paused)
+            {
+                onResumeGame();
+            }
+        }
+    }
+
     public void ChangeScene(string sceneName)
     {
         GameManager.instance.ChangeSceneWithTransition(sceneName);
@@ -51,14 +70,29 @@ public class UIManager : MonoBehaviour
         ChangeScene(SceneManager.GetActiveScene().name);
     }
 
-    public void UpdateLives(int currentLives)
+    public void onPauseButton()
     {
-        for (int i = 0; i < hearts.Length; i++)
+        if (menu == null)
         {
-            if (i < currentLives)
-                hearts[i].sprite = fullHeart;
-            else
-                hearts[i].sprite = emptyHeart;
+            Debug.LogError("¡Ojo! No hay ningún objeto asignado a menuUI en el inspector.");
+            return;
         }
+
+        if (GameManager.instance.gameState != GameState.Playing)
+            return;
+
+        menu.SetActive(true);
+        GameManager.instance.PauseGame();
+    }
+
+    public void onResumeGame()
+    {
+        menu.SetActive(false);
+       // GameManager.instance.ResumeGame();
+    }
+
+    public void onQuitGame()
+    {
+        Application.Quit();
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public enum PlayerMoveStates
 {
@@ -122,6 +123,10 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
 
+        if (GameManager.instance.gameState == GameState.Paused)
+        {
+            return;
+        }
 
         //Orientacion del collider segun lo que este haciendo el player
         if (isSliding || isCrouching)
@@ -203,7 +208,8 @@ public class PlayerController : MonoBehaviour
         {
             if (Input.GetKeyDown(attack_MeleeKey) && !isAttacking && !isSliding) //Ataque melee
             {
-                StartCoroutine(AttackCoroutine(PlayerMoveStates.AttackMelee));
+                if (!EventSystem.current.IsPointerOverGameObject())
+                    StartCoroutine(AttackCoroutine(PlayerMoveStates.AttackMelee));
             }
             else if (Mathf.Abs(localVel.x) > 0.01f) //Movimiento lateral
             {
@@ -265,7 +271,8 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(attack_RangeKey) && !isAttacking && !isSliding) //Ataque rango que tambien se puede hacer en el aire
         {
-            StartCoroutine(AttackCoroutine(PlayerMoveStates.AttackRanged));
+            if(!EventSystem.current.IsPointerOverGameObject())
+                StartCoroutine(AttackCoroutine(PlayerMoveStates.AttackRanged));
         }
     }
 

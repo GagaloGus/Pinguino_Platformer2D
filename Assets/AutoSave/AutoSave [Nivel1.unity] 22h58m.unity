@@ -4929,7 +4929,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1817263754}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: onQuitGame
         m_Mode: 1
@@ -6999,7 +6999,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1817263753}
         m_TargetAssemblyTypeName: 
         m_MethodName: 
         m_Mode: 1
@@ -15452,7 +15452,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1817263754}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: onPauseButton
         m_Mode: 1
@@ -16817,7 +16817,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelInt: 1
-  menu: {fileID: 0}
+  menuUI: {fileID: 0}
 --- !u!114 &736318009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23903,7 +23903,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1817263754}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: onResumeGame
         m_Mode: 1
@@ -40138,7 +40138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelInt: 1
-  menu: {fileID: 1520963508}
+  menuUI: {fileID: 1520963508}
 --- !u!4 &1817263755
 Transform:
   m_ObjectHideFlags: 0
@@ -47707,11 +47707,11 @@ SceneRoots:
   - {fileID: 1580661651}
   - {fileID: 868214194}
   - {fileID: 1151447215}
+  - {fileID: 736318012}
+  - {fileID: 412341951}
   - {fileID: 460032287}
   - {fileID: 1919119870}
   - {fileID: 1727994498}
   - {fileID: 63111892}
-  - {fileID: 190601130}
-  - {fileID: 736318012}
-  - {fileID: 412341951}
   - {fileID: 1817263755}
+  - {fileID: 190601130}

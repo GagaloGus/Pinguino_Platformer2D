@@ -57,8 +57,6 @@ public class GameManager : MonoBehaviour
         currentLives = maxLives;
         gameState = GameState.Playing;
         StartLevel();
-
-        UIManager.instance.UpdateLives(currentLives);
     }
 
     public void AddScore(int points)
@@ -102,7 +100,6 @@ public class GameManager : MonoBehaviour
         if (gameState != GameState.Playing) return;
 
         currentLives--;
-        UIManager.instance.UpdateLives(currentLives);
 
         if (currentLives <= 0)
         {
