@@ -61,8 +61,6 @@ public class Boss : MonoBehaviour
     }
     public void Update()
     {
-        //Debug.Log(bossStones[0].GetComponentInChildren<StoneBoss>().visible);
-
         if (canCheck && spawned)
         {
             CheckStones();
@@ -314,9 +312,7 @@ public class Boss : MonoBehaviour
                 StartCoroutine("hitCooldown");
                 GetDamage(PlayerController.instance.dmgMeleeAtk);
             }
-
         }
-
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -330,16 +326,6 @@ public class Boss : MonoBehaviour
             Destroy(collision.gameObject);
         }
     }
-
-    /*private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player") && canBeHit && health > 0)
-        {
-            animator.SetBool("getHit", true);
-            health -= 1;
-            StartCoroutine("hitCooldown");
-        }
-    }*/
 
     IEnumerator hitCooldown()
     {
