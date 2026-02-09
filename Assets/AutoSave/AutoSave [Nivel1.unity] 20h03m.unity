@@ -16404,10 +16404,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnEnemyKey: 102
-  spawnBossEnemyKey: 103
   spawnEnemyPos: {x: 10.36, y: 4.94}
   Prefab_enemy: {fileID: 5118674638486660715, guid: fc36c6b282a894c45855b6c1f615e246, type: 3}
-  Prefab_bossEnemy: {fileID: 0}
 --- !u!114 &736318008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29890,7 +29888,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0924d0a07f6083419e3351ce1685500, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activationRadius: 0
   activationSound: {fileID: 8300000, guid: d3e4d74e6d317844b8494bd1f9e1ea64, type: 3}
   OnActivation:
     m_PersistentCalls:

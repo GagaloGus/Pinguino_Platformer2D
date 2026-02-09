@@ -18,7 +18,7 @@ public class Coin : MonoBehaviour
 
     public void Collected()
     {
-        GameManager.instance.GetCoins(coinAmount);
+        GameManager.instance.AddCoinScore(coinType);
         AudioManager.instance.PlaySFX2D(collect_sfx);
         Destroy(transform.parent.gameObject);
     }
