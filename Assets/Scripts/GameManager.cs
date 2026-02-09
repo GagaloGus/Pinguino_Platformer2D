@@ -120,6 +120,7 @@ public class GameManager : MonoBehaviour
     {
         PantallaCarga.gameObject.SetActive(true);
         PantallaCarga.SetInteger("state", 2);
+        AudioManager.instance.StopAllSFX();
         AudioManager.instance.PlaySFX2D(MusicLibrary.instance.door_close_sfx);
     }
 

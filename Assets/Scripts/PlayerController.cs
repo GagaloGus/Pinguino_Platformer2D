@@ -26,7 +26,6 @@ public class PlayerController : MonoBehaviour
     public float friction = 40f;
     public float slideVelRequired = 10;
     public Vector2 localVel;
-    public float YLevelDeath = -7.5f;
     float inputX;
     Vector2 startPos;
 
@@ -165,12 +164,6 @@ public class PlayerController : MonoBehaviour
             targetSpeedMult,
             runTransitionSpeed * Time.deltaTime
         );
-
-        //Muerte si cae muy abajo
-        if (transform.position.y < YLevelDeath)
-            Death("The void", Vector3.zero);
-
-
     }
 
     void FixedUpdate()
@@ -438,6 +431,14 @@ public class PlayerController : MonoBehaviour
                 Vector2 bounceDir = new Vector2(CenterPos.position.x - colliderPoint.x, CenterPos.position.y - colliderPoint.y).normalized;
                 Hit(1, bounceDir, collision.collider.gameObject);
             }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("DeathZone"))
+        {
+            Death("The void", Vector3.zero);
         }
     }
 

@@ -6641,6 +6641,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2274580959923240257, guid: 7bc65294ce77c1542b3ba89b97c66dd8, type: 3}
+      propertyPath: chancePlayLoadSound
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2411106441949669236, guid: 7bc65294ce77c1542b3ba89b97c66dd8, type: 3}
       propertyPath: m_Name
       value: GameManager
@@ -16934,6 +16938,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 519420032}
+  - {fileID: 1616400778}
   - {fileID: 432658566}
   - {fileID: 1501605485}
   - {fileID: 808353405}
@@ -16943,13 +16948,12 @@ SceneRoots:
   - {fileID: 962228448}
   - {fileID: 145325472}
   - {fileID: 1044254150}
+  - {fileID: 1580661651}
+  - {fileID: 868214194}
+  - {fileID: 1151447215}
+  - {fileID: 736318012}
   - {fileID: 460032287}
   - {fileID: 1919119870}
   - {fileID: 1727994498}
   - {fileID: 63111892}
   - {fileID: 190601130}
-  - {fileID: 1616400778}
-  - {fileID: 1580661651}
-  - {fileID: 868214194}
-  - {fileID: 1151447215}
-  - {fileID: 736318012}

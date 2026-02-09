@@ -197,16 +197,13 @@ public class AudioManager : MonoBehaviour
             source.Stop();
             source.gameObject.SetActive(false);
         }
+
+        StopLoopedSFX();
     }
 
     public void StopAll()
     {
-        foreach (AudioSource source in activeAudioSources)
-        {
-            source.Stop();
-            source.gameObject.SetActive(false);
-        }
-
+        StopAllSFX();
         ambientSource.Stop();
         StopAllCoroutines();
         AudioListener.volume = 1;
