@@ -20,4 +20,9 @@ public class AnimationEvents : MonoBehaviour
         GameManager.instance.CreateExplosion(transform.position, Vector2.one * sizeInc, true);
         Destroy(gameObject);
     }
+
+    public void EnableGoNextLevel()
+    {
+        FindObjectOfType<PasarNivel>().canGoNextLevel = true;
+    }
 }

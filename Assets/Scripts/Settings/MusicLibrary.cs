@@ -8,9 +8,7 @@ public class MusicLibrary : MonoBehaviour
 
     [Header("-------- CANCIONES --------")]
     [Header("Canciones de mundo")]
-    public AudioClip level1_song;
-    public AudioClip level2_song;
-    public AudioClip level3_song;
+    public AudioClip[] level_themes;
 
     [Header("-------- SOUND EFFECTS --------")]
     [Header("player sfx")]

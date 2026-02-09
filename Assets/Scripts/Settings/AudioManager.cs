@@ -37,6 +37,18 @@ public class AudioManager : MonoBehaviour
         ambientSource.volume = volumeMusic;
     }
 
+    public void PlayLevelSong(int id)
+    {
+        try
+        {
+            PlayAmbientMusic(MusicLibrary.instance.level_themes[id]);
+        }
+        catch
+        {
+            //No se reproduzca ninguna
+        }
+    }
+
     public void SetMusicVolume(float volume)
     {
         volumeMusic = Mathf.Clamp01(volume);
