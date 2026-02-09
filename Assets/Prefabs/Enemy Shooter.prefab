@@ -294,7 +294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5949a30e4b2e61e458d26991f57150b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 1
   dir: 1
   jumpForce: 15
   health: 0
@@ -314,8 +314,7 @@ MonoBehaviour:
   wallFound: 0
   isGrounded: 0
   canJump: 1
-  PatrolPoints:
-  - {x: -44.68, y: 1.71}
+  PatrolPoints: []
   canShoot: 1
   shootColdown: 2
   ammo: {fileID: 0}
