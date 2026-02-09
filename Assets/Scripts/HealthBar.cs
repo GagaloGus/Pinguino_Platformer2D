@@ -15,7 +15,7 @@ public class HealthBar : MonoBehaviour
     }
     void Update()
     {
-        fillImg.fillAmount = bossController.health / bossController.healthBase;
+        fillImg.fillAmount = (float)bossController.health / (float)bossController.healthBase;
         if(bossController.health <= 0)
         {
             gameObject.SetActive(false);

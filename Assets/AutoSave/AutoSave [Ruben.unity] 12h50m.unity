@@ -2390,10 +2390,6 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4436265285348557465, guid: da2adad6c2bc49f488b4e6de8fbe0a85, type: 3}
-      propertyPath: destroy
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4436265285348557465, guid: da2adad6c2bc49f488b4e6de8fbe0a85, type: 3}
       propertyPath: respawnTime
       value: 16
       objectReference: {fileID: 0}
@@ -4017,10 +4013,6 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4436265285348557465, guid: da2adad6c2bc49f488b4e6de8fbe0a85, type: 3}
-      propertyPath: destroy
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4436265285348557465, guid: da2adad6c2bc49f488b4e6de8fbe0a85, type: 3}
       propertyPath: respawnTime
       value: 16
       objectReference: {fileID: 0}
@@ -5141,7 +5133,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5126755580791060611, guid: feee699cce459894db57e523ca35d2ef, type: 3}
       propertyPath: health
-      value: 0
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 5126755580791060611, guid: feee699cce459894db57e523ca35d2ef, type: 3}
       propertyPath: piedra
@@ -5157,7 +5149,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5126755580791060611, guid: feee699cce459894db57e523ca35d2ef, type: 3}
       propertyPath: healthBase
-      value: 2
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 5126755580791060611, guid: feee699cce459894db57e523ca35d2ef, type: 3}
       propertyPath: isGrounded

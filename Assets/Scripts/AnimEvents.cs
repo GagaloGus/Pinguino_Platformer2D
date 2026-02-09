@@ -27,7 +27,7 @@ public class AnimEvents : MonoBehaviour
         GetComponentInParent<Boss>().hitBoxsetter = false;
         GetComponentInParent<Boss>().animator.SetBool("canAttack", false);
     }
-    void DisableHit()
+    public void DisableHit()
     {
         GetComponent<Animator>().SetBool("getHit", false);
         GetComponentInParent<Boss>().spawned = true;

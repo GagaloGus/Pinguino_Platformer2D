@@ -5157,7 +5157,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5126755580791060611, guid: feee699cce459894db57e523ca35d2ef, type: 3}
       propertyPath: healthBase
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5126755580791060611, guid: feee699cce459894db57e523ca35d2ef, type: 3}
       propertyPath: isGrounded
