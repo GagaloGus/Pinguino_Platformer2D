@@ -87,59 +87,6 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void GetDamage(int dmg)
-    {
-        health -= dmg;
-
-        if (health <= 0)
-        {
-            print("ay");
-            AudioManager.instance.PlaySFX2D(MusicLibrary.instance.enemy_kill_sfx);
-            AudioManager.instance.PlayRandomSFX2D(MusicLibrary.instance.enemy_death_sfxs);
-            GameManager.instance.CreateExplosion(transform, false);
-            Destroy(gameObject);
-        }
-        else
-        {
-            print("mamon");
-            AudioManager.instance.PlaySFX2D(MusicLibrary.instance.enemy_ow_sfx);
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("PlayerAttackBox"))
-        {
-            if (PlayerController.instance.isSliding)
-            {
-                PlayerController.instance.onChargeOnEnemy(this);
-                GetDamage(PlayerController.instance.dmgChargeAtk);
-                rb.AddForce(Vector2.up * -dir * 25, ForceMode2D.Impulse);
-            }
-            else
-            {
-                GetDamage(PlayerController.instance.dmgMeleeAtk);
-                rb.AddForce(Vector2.right * -dir * 8, ForceMode2D.Impulse);
-            }
-
-        }
-
-        if (collision.CompareTag("DeathZone"))
-        {
-            AudioManager.instance.PlaySFX2D(MusicLibrary.instance.enemy_ow_sfx);
-            Destroy(gameObject);
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.collider.TryGetComponent(out PlayerBullet bullet))
-        {
-            GetDamage(bullet.damage);
-            Destroy(collision.gameObject);
-        }
-    }
-
     // Método que comprueba si hay algun objeto con el layer = 'Ground', delante de él
     protected virtual void CheckWall()
     {
@@ -327,6 +274,63 @@ public class Enemy : MonoBehaviour
         }
         // Si no se cumple nada de lo anterior devuelve false
         return false;
+    }
+    void GetDamage(int dmg)
+    {
+        health -= dmg;
+
+        if (health <= 0)
+        {
+            print("ay");
+            AudioManager.instance.PlaySFX2D(MusicLibrary.instance.enemy_kill_sfx);
+            AudioManager.instance.PlayRandomSFX2D(MusicLibrary.instance.enemy_death_sfxs);
+            GameManager.instance.CreateExplosion(transform, false);
+            Destroy(gameObject);
+        }
+        else
+        {
+            print("mamon");
+            AudioManager.instance.PlaySFX2D(MusicLibrary.instance.enemy_ow_sfx);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("PlayerAttackBox"))
+        {
+            if (PlayerController.instance.isSliding)
+            {
+                PlayerController.instance.onChargeOnEnemy(this);
+                GetDamage(PlayerController.instance.dmgChargeAtk);
+                rb.AddForce(Vector2.up * -dir * 25, ForceMode2D.Impulse);
+            }
+            else
+            {
+                GetDamage(PlayerController.instance.dmgMeleeAtk);
+                rb.AddForce(Vector2.right * -dir * 8, ForceMode2D.Impulse);
+            }
+
+        }
+
+        if (collision.CompareTag("DeathZone"))
+        {
+            AudioManager.instance.PlaySFX2D(MusicLibrary.instance.enemy_ow_sfx);
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.TryGetComponent(out PlayerBullet bullet))
+        {
+            GetDamage(bullet.damage);
+            Destroy(collision.gameObject);
+        }
+        else if (collision.gameObject.tag == "HurtBox")
+        {
+            AudioManager.instance.PlaySFX2D(MusicLibrary.instance.enemy_ow_sfx);
+            Destroy(gameObject);
+        }
     }
 
     // Metodo par ver visualmente en el editor el gizmos de deteccion de obstaculos y suelo

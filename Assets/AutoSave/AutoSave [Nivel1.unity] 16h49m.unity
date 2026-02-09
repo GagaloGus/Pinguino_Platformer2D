@@ -5420,7 +5420,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnEnemyKey: 102
   spawnEnemyPos: {x: 10.36, y: 4.94}
-  Prefab_enemy: {fileID: 1927768981}
+  Prefab_enemy: {fileID: 6603473407226121674, guid: 5b51f4a405856e24b8416888590f98ed, type: 3}
 --- !u!114 &736318008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10656,14 +10656,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 163207763357800848, guid: 00bee37fa906df847ba3bec86f95204a, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1136123159760431117, guid: 00bee37fa906df847ba3bec86f95204a, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 3051400998825633099, guid: 00bee37fa906df847ba3bec86f95204a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 12.7
@@ -10704,37 +10696,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4244247243079977552, guid: 00bee37fa906df847ba3bec86f95204a, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 4441366211764120717, guid: 00bee37fa906df847ba3bec86f95204a, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 4441366211764120717, guid: 00bee37fa906df847ba3bec86f95204a, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 4441366211764120717, guid: 00bee37fa906df847ba3bec86f95204a, type: 3}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 6051554345997023467, guid: 00bee37fa906df847ba3bec86f95204a, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7729432242122358390, guid: 00bee37fa906df847ba3bec86f95204a, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 7963274462819002120, guid: 00bee37fa906df847ba3bec86f95204a, type: 3}
-      propertyPath: life
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8789585069203675373, guid: 00bee37fa906df847ba3bec86f95204a, type: 3}
-      propertyPath: m_Layer
-      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13023,11 +12987,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.57, y: 0.65}
   m_EdgeRadius: 0
---- !u!1 &1927768981 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6603473407226121674, guid: 5b51f4a405856e24b8416888590f98ed, type: 3}
-  m_PrefabInstance: {fileID: 1545213627}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1948750427
 GameObject:
   m_ObjectHideFlags: 0

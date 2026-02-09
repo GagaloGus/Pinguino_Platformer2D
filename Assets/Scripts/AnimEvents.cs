@@ -31,5 +31,6 @@ public class AnimEvents : MonoBehaviour
     {
         GetComponent<Animator>().SetBool("getHit", false);
         GetComponentInParent<Boss>().spawned = true;
+        GetComponentInParent<Boss>().canMove = true;
     }
 }

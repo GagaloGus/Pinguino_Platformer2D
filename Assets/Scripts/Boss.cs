@@ -38,7 +38,7 @@ public class Boss : MonoBehaviour
     [Header("Boss Options")]
     public Animator animator;
     public bool spawned,hitBoxsetter;
-    public bool canCheck, canBeHit = false;
+    public bool canCheck, canBeHit = false, canMove = true;
     public float attackDis = 4f;
 
     [Header("Boss Stones")]
@@ -79,7 +79,7 @@ public class Boss : MonoBehaviour
                 hitBox.SetActive(false);
             }
 
-            if (IsTargetInCone(player.transform) && spawned)
+            if (IsTargetInCone(player.transform) && spawned && canMove)
             {
                 float dist = Vector2.Distance(transform.position, player.transform.position);
 
@@ -279,8 +279,59 @@ public class Boss : MonoBehaviour
             canCheck = true;
         }
     }
+    void GetDamage(int dmg)
+    {
+        health -= dmg;
+        canMove = false;
+        if (health <= 0)
+        {
+            print("ay");
+            AudioManager.instance.PlaySFX2D(MusicLibrary.instance.enemy_kill_sfx);
+            AudioManager.instance.PlayRandomSFX2D(MusicLibrary.instance.enemy_death_sfxs);
+            GameManager.instance.CreateExplosion(transform, false);
+        }
+        else
+        {
+            print("mamon");
+            AudioManager.instance.PlaySFX2D(MusicLibrary.instance.enemy_ow_sfx);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("PlayerAttackBox") && canBeHit && health > 0)
+        {
+            if (PlayerController.instance.isSliding)
+            {
+                animator.SetBool("getHit", true);
+                StartCoroutine("hitCooldown");
+                //PlayerController.instance.onChargeOnEnemy(this);
+                GetDamage(PlayerController.instance.dmgChargeAtk);
+            }
+            else
+            {
+                animator.SetBool("getHit", true);
+                StartCoroutine("hitCooldown");
+                GetDamage(PlayerController.instance.dmgMeleeAtk);
+            }
+
+        }
+
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.TryGetComponent(out PlayerBullet bullet) && canBeHit && health > 0)
+        {
+            animator.SetBool("getHit", true);
+            StartCoroutine("hitCooldown");
+
+            GetDamage(bullet.damage);
+            Destroy(collision.gameObject);
+        }
+    }
+
+    /*private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player") && canBeHit && health > 0)
         {
@@ -288,7 +339,7 @@ public class Boss : MonoBehaviour
             health -= 1;
             StartCoroutine("hitCooldown");
         }
-    }
+    }*/
 
     IEnumerator hitCooldown()
     {

@@ -2390,6 +2390,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4436265285348557465, guid: da2adad6c2bc49f488b4e6de8fbe0a85, type: 3}
+      propertyPath: destroy
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4436265285348557465, guid: da2adad6c2bc49f488b4e6de8fbe0a85, type: 3}
+      propertyPath: healthBase
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4436265285348557465, guid: da2adad6c2bc49f488b4e6de8fbe0a85, type: 3}
       propertyPath: respawnTime
       value: 16
       objectReference: {fileID: 0}
@@ -3207,11 +3215,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3051400998825633099, guid: 00bee37fa906df847ba3bec86f95204a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -79.4996
+      value: -12.3
       objectReference: {fileID: 0}
     - target: {fileID: 3051400998825633099, guid: 00bee37fa906df847ba3bec86f95204a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.434106
+      value: -0.2
       objectReference: {fileID: 0}
     - target: {fileID: 3051400998825633099, guid: 00bee37fa906df847ba3bec86f95204a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4011,6 +4019,14 @@ PrefabInstance:
     - target: {fileID: 4436265285348557465, guid: da2adad6c2bc49f488b4e6de8fbe0a85, type: 3}
       propertyPath: appear
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4436265285348557465, guid: da2adad6c2bc49f488b4e6de8fbe0a85, type: 3}
+      propertyPath: destroy
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4436265285348557465, guid: da2adad6c2bc49f488b4e6de8fbe0a85, type: 3}
+      propertyPath: healthBase
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4436265285348557465, guid: da2adad6c2bc49f488b4e6de8fbe0a85, type: 3}
       propertyPath: respawnTime
@@ -5133,7 +5149,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5126755580791060611, guid: feee699cce459894db57e523ca35d2ef, type: 3}
       propertyPath: health
-      value: 50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5126755580791060611, guid: feee699cce459894db57e523ca35d2ef, type: 3}
       propertyPath: piedra
