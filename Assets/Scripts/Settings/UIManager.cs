@@ -17,15 +17,6 @@ public class UIManager : MonoBehaviour
     {
         instance = this;
     }
-    public void ChangeScene(string sceneName)
-    {
-        GameManager.instance.ChangeSceneWithTransition(sceneName);
-    }
-
-    public void ReloadScene()
-    {
-        ChangeScene(SceneManager.GetActiveScene().name);
-    }
 
     public void UpdateLives(int currentLives)
     {

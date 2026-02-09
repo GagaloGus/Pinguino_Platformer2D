@@ -245,6 +245,7 @@ MonoBehaviour:
   level_themes:
   - {fileID: 8300000, guid: a870fff6e28f8fa4a8027ba884d5c54c, type: 3}
   - {fileID: 8300000, guid: 0075d5c29e0447f4e95182a6b7a8c946, type: 3}
+  - {fileID: 8300000, guid: be7a674c59397464985d6467efbeead8, type: 3}
   player_attack_sfxs:
   - {fileID: 8300000, guid: c5f3cf89d9ad277449baa4b37a6e96a2, type: 3}
   - {fileID: 8300000, guid: 53046da780bb86845bbdf9c9d58138c5, type: 3}
@@ -256,11 +257,18 @@ MonoBehaviour:
   player_slide_sfx: {fileID: 8300000, guid: 68314c203da4858458e6aeaba1487cac, type: 3}
   player_bump_sfx: {fileID: 8300000, guid: 8ce023403108f8b41b27ebf80ebab6f0, type: 3}
   player_kill_sfx: {fileID: 8300000, guid: 3d860e912721bda40bce0b58a453af59, type: 3}
+  player_ow_sfxs:
+  - {fileID: 8300000, guid: b55f5547eee2d28449d95683ee08bc36, type: 3}
+  - {fileID: 8300000, guid: 95e1034282a0a5a45bb3d30d39dfc33d, type: 3}
+  - {fileID: 8300000, guid: 92066247b30d70d448cf3f4eee8ff0b4, type: 3}
+  - {fileID: 8300000, guid: 345f2f5178283aa40b0fff1bf8670fb3, type: 3}
+  - {fileID: 8300000, guid: 0b4a968f19cfb4a419abd9617d7ecff7, type: 3}
   player_die_sfxs:
   - {fileID: 8300000, guid: fc59044d08269b84abb6c58121a18e2c, type: 3}
   - {fileID: 8300000, guid: fb9baac7f1fbc9c478ac1be2390ca20b, type: 3}
   - {fileID: 8300000, guid: 1feaa51a3f594b242b8286af2c35cab9, type: 3}
   - {fileID: 8300000, guid: d0f12bdb4fbd2b0488820812077524a5, type: 3}
+  - {fileID: 8300000, guid: ca186c5b43fb2d8489a6b919153a46d3, type: 3}
   enemy_death_sfxs:
   - {fileID: 8300000, guid: 817e57a2152719049964262ca2cea480, type: 3}
   - {fileID: 8300000, guid: 314b4ccd7895c5e42944ad02f25dcfa9, type: 3}

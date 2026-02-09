@@ -7,20 +7,20 @@ public class PasarNivel : MonoBehaviour
 {
     public string nextLevelName;
     public bool goNextLevel, canGoNextLevel = true;
-    public GameObject UpArrowKey;
+    GameObject UpArrowKey;
 
     private void Start()
     {
         goNextLevel = false;
         UpArrowKey = transform.Find("up_arrow").gameObject;
-        UpArrowKey.SetActive(false);
+        UpArrowKey?.SetActive(false);
     }
 
     //Cuando el player sale del rango se desactiva la flechita
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.TryGetComponent(out PlayerController player))
-            UpArrowKey.SetActive(false);
+            UpArrowKey?.SetActive(false);
     }
 
     //Cuando el player entra en el trigger, se muestra la flechita
@@ -29,7 +29,7 @@ public class PasarNivel : MonoBehaviour
     {
         if (collision.TryGetComponent(out PlayerController player) && canGoNextLevel)
         {
-            UpArrowKey.SetActive(true);
+            UpArrowKey?.SetActive(true);
             if (Input.GetAxis("Vertical") > 0 && !goNextLevel)
             {
                 goNextLevel = true;

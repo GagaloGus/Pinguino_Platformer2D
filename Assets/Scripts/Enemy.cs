@@ -9,8 +9,8 @@ public class Enemy : MonoBehaviour
     protected GameObject player, objDetector, seen, lost;
 
     [Header("Enemy Movement")]
-    public float speed = 5f;
-    public float dir = -1;
+    public float speed = 1.2f;
+    public float maxSpeed = 10, dir = -1;
     public float jumpForce = 15f;
 
     [Header("Enemy stats")]
@@ -156,8 +156,10 @@ public class Enemy : MonoBehaviour
             coneDirection = 180f;
         }
         // Una vez visto hacia que direccion moverse, procede a acelerar
-        Vector2 move = new Vector2(dir, 0f) * speed * 10;
+        Vector2 move = new Vector2(dir, 0f) * speed;
         rb.AddForce(move);
+        if (Mathf.Abs(rb.velocity.x) > maxSpeed)
+            rb.velocity = new(maxSpeed, rb.velocity.y);
     }
     protected void Patrol()
     {

@@ -316,6 +316,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             AddForceToDir(bounceDir);
+            AudioManager.instance.PlayRandomSFX2D(MusicLibrary.instance.player_ow_sfxs);
             StartCoroutine(IFramesCoroutine(hitInvFramesDuration));
         }
     }
@@ -361,7 +362,7 @@ public class PlayerController : MonoBehaviour
 
         CoolFunctions.InvokeDelayed(this, clip.length - 0.15f, () => { 
             GameManager.instance.ResetRun();
-            UIManager.instance.ReloadScene(); 
+            LevelManager.instance.ReloadScene(); 
         });
     }
 

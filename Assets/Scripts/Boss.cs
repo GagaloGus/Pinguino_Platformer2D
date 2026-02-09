@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Boss : MonoBehaviour
 {
@@ -40,6 +41,7 @@ public class Boss : MonoBehaviour
     public bool spawned,hitBoxsetter;
     public bool canCheck, canBeHit = false, canMove = true;
     public float attackDis = 4f;
+    public UnityEvent OnDeathEvent;
 
     [Header("Boss Stones")]
     public GameObject[] bossStones;
@@ -125,6 +127,8 @@ public class Boss : MonoBehaviour
                 bossStones[i].transform.GetChild(0).gameObject.GetComponent<StoneBoss>().destroy = true;
                 bossStones[i].transform.GetChild(0).gameObject.GetComponent<StoneBoss>().enabled = false;   
             }
+
+            OnDeathEvent.Invoke();
         }
     }
 

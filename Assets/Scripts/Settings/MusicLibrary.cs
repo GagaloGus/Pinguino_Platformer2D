@@ -15,6 +15,7 @@ public class MusicLibrary : MonoBehaviour
     public AudioClip[] player_attack_sfxs;
     public AudioClip[] player_shoot_sfxs;
     public AudioClip player_crouching_sfx, player_slide_sfx, player_bump_sfx, player_kill_sfx;
+    public AudioClip[] player_ow_sfxs;
     public AudioClip[] player_die_sfxs;
 
     [Header("enemy sfx")]

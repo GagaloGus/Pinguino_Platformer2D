@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -16,6 +17,16 @@ public class LevelManager : MonoBehaviour
     void Start()
     {
         PlayLevelSong();
+    }
+
+    public void ChangeScene(string sceneName)
+    {
+        GameManager.instance.ChangeSceneWithTransition(sceneName);
+    }
+
+    public void ReloadScene()
+    {
+        ChangeScene(SceneManager.GetActiveScene().name);
     }
 
     public void PlayLevelSong()
