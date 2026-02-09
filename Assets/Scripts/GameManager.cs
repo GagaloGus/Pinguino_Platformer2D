@@ -21,7 +21,14 @@ public class GameManager : MonoBehaviour
     [Header("Score")]
     private int score;
     private int highScore;
-    int coins;
+
+    [Header("Score Settings")]
+    public int pointsBaseEnemy = 100;
+
+    public int pointsCoinBronze = 10;
+    public int pointsCoinSilver = 25;
+    public int pointsCoinGold = 50;
+    public int pointsCoinSpecial = 150;
 
     private void Awake()
     {
@@ -43,7 +50,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Time.timeScale = 1f;
-        score = 0;
         gameState = GameState.Playing;
         StartLevel();
     }
@@ -58,6 +64,37 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt("HighScore", highScore);
             PlayerPrefs.Save();
         }
+    }
+
+    public void AddCoinScore(int coinType)
+    {
+        int points = 0;
+
+        switch (coinType)
+        {
+            case 0:
+                points = pointsCoinBronze;
+                break;
+            case 1:
+                points = pointsCoinSilver;
+                break;
+            case 2:
+                points = pointsCoinGold;
+                break;
+            case 3:
+                points = pointsCoinSpecial;
+                break;
+        }
+
+        AddScore(points);
+        //coins += points;
+    }
+
+    public void ResetRun()
+    {
+        score = 0;
+        //coins = 0;
+        gameState = GameState.Playing;
     }
 
     public void PauseGame()
@@ -78,6 +115,7 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
+        ResetRun();
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
@@ -100,7 +138,7 @@ public class GameManager : MonoBehaviour
 
     public void GetCoins(int amount)
     {
-        coins += amount;
+     //   coins += amount;
     }
 
     public void CreateExplosion(Transform objTransform, bool playSound)

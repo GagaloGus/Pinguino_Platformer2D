@@ -368,7 +368,10 @@ public class PlayerController : MonoBehaviour
         AudioManager.instance.PlaySFX2D(MusicLibrary.instance.lego_breaking_sfx);
         AudioClip clip = AudioManager.instance.PlayRandomSFX2D(MusicLibrary.instance.player_die_sfxs);
 
-        CoolFunctions.InvokeDelayed(this, clip.length - 0.15f, () => { UIManager.instance.ReloadScene(); });
+        CoolFunctions.InvokeDelayed(this, clip.length - 0.15f, () => { 
+            GameManager.instance.ResetRun();
+            UIManager.instance.ReloadScene(); 
+        });
     }
 
 
