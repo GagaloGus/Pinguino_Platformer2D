@@ -10,7 +10,7 @@ public class Bullet : MonoBehaviour
 
     private void Awake()
     {
-        player = FindAnyObjectByType<PlayerMove>().gameObject;
+        player = PlayerController.instance.gameObject;
         parent = GetComponentInParent<Ammo>().gameObject.GetComponentInParent<ShooterEnemy>().gameObject;
         rb = GetComponent<Rigidbody2D>();
     }

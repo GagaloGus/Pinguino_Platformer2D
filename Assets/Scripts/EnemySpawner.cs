@@ -4,18 +4,15 @@ using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public KeyCode spawnEnemyKey = KeyCode.F, spawnBossEnemyKey = KeyCode.G;
+    public KeyCode spawnEnemyKey = KeyCode.F;
     public Vector2 spawnEnemyPos;
-    public GameObject Prefab_enemy, Prefab_bossEnemy;
+    public GameObject Prefab_enemy;
 
 
     private void Update()
     {
         if (Input.GetKeyDown(spawnEnemyKey) && Prefab_enemy != null)
             SpawnNewEnemy();
-
-        if (Input.GetKeyDown(spawnBossEnemyKey) && Prefab_bossEnemy != null)
-            SpawnBossEnemy();
     }
 
     public void SpawnNewEnemy()
@@ -23,13 +20,6 @@ public class EnemySpawner : MonoBehaviour
         Transform enemy = Instantiate(Prefab_enemy).transform;
         enemy.position = spawnEnemyPos;
         AudioManager.instance.PlaySFX2D(MusicLibrary.instance.spawn_sfx);
-    }
-
-    public void SpawnBossEnemy()
-    {
-        Transform enemy = Instantiate(Prefab_bossEnemy).transform;
-        enemy.position = spawnEnemyPos;
-        AudioManager.instance.PlaySFX2D(MusicLibrary.instance.BIG_spawn_sfx);
     }
 
 #if UNITY_EDITOR

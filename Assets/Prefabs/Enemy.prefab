@@ -257,10 +257,11 @@ MonoBehaviour:
   speed: 5
   dir: -1
   jumpForce: 15
+  health: 10
   raycastDetection: 1
   raycastDetectionDown: 0.56
   angle: 72.5
-  rayRange: 10.74
+  rayRange: 5.29
   coneDirection: -180
   targetMask:
     serializedVersion: 2
@@ -273,10 +274,7 @@ MonoBehaviour:
   wallFound: 0
   isGrounded: 0
   canJump: 1
-  PatrolPoints:
-  - {x: 5, y: -2}
-  - {x: 16, y: -2}
-  - {x: -1, y: -2}
+  PatrolPoints: []
 --- !u!1 &6920836917854705368
 GameObject:
   m_ObjectHideFlags: 0

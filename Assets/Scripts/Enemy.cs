@@ -13,6 +13,9 @@ public class Enemy : MonoBehaviour
     public float dir = -1;
     public float jumpForce = 15f;
 
+    [Header("Enemy stats")]
+    public int health;
+
     [Header("Obstacle Detection")]
     public float raycastDetection = 1;
     public float raycastDetectionDown = 0.5f;
@@ -43,7 +46,7 @@ public class Enemy : MonoBehaviour
 
     protected void Start()
     {
-        player = FindAnyObjectByType<PlayerMove>().gameObject;
+        player = PlayerController.instance.gameObject;
         rb = GetComponent<Rigidbody2D>();
         objDetector = transform.GetChild(0).gameObject;
         seen = transform.GetChild(1).gameObject;
@@ -81,6 +84,59 @@ public class Enemy : MonoBehaviour
         {
             // LLama el método para que este objeto siga siguiendo al objetivo durante un tiempo (Como buscandolo)
             Search();
+        }
+    }
+
+    void GetDamage(int dmg)
+    {
+        health -= dmg;
+
+        if (health <= 0)
+        {
+            print("ay");
+            AudioManager.instance.PlaySFX2D(MusicLibrary.instance.enemy_kill_sfx);
+            AudioManager.instance.PlayRandomSFX2D(MusicLibrary.instance.enemy_death_sfxs);
+            GameManager.instance.CreateExplosion(transform, false);
+            Destroy(gameObject);
+        }
+        else
+        {
+            print("mamon");
+            AudioManager.instance.PlaySFX2D(MusicLibrary.instance.enemy_ow_sfx);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("PlayerAttackBox"))
+        {
+            if (PlayerController.instance.isSliding)
+            {
+                PlayerController.instance.onChargeOnEnemy(this);
+                GetDamage(PlayerController.instance.dmgChargeAtk);
+                rb.AddForce(Vector2.up * -dir * 25, ForceMode2D.Impulse);
+            }
+            else
+            {
+                GetDamage(PlayerController.instance.dmgMeleeAtk);
+                rb.AddForce(Vector2.right * -dir * 8, ForceMode2D.Impulse);
+            }
+
+        }
+
+        if (collision.CompareTag("DeathZone"))
+        {
+            AudioManager.instance.PlaySFX2D(MusicLibrary.instance.enemy_ow_sfx);
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.TryGetComponent(out PlayerBullet bullet))
+        {
+            GetDamage(bullet.damage);
+            Destroy(collision.gameObject);
         }
     }
 
@@ -153,8 +209,8 @@ public class Enemy : MonoBehaviour
             coneDirection = 180f;
         }
         // Una vez visto hacia que direccion moverse, procede a acelerar
-        Vector2 move = new Vector2(dir, 0f) * speed * Time.deltaTime;
-        transform.Translate(move);
+        Vector2 move = new Vector2(dir, 0f) * speed * 10;
+        rb.AddForce(move);
     }
     protected void Patrol()
     {

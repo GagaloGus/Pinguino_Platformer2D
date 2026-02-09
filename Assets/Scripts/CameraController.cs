@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour
 
     [Header("Movimiento")]
     public bool followPlayer;
-    public float velocidadCamara = 0.1f;
+    public float velocidadCamara = 3.5f;
     public Vector3 desplazamiento;
 
     [Header("Limites")]

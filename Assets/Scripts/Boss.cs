@@ -5,17 +5,18 @@ using UnityEngine;
 public class Boss : Enemy
 {
     [Header("Boss Options")]
-    public GameObject sprite, hitBox, shield;
+    public GameObject sprite, hitBox, shield, player;
     public Animator animator;
     public bool spawned,hitBoxsetter;
     public bool canCheck, canBeHit = false;
-    public float healthBase = 5000f, health, attackDis = 4f;
+    public float attackDis = 4f;
+    [HideInInspector] public int healthBase;
 
     [Header("Boss Stones")]
     public GameObject[] bossStones;
     void Start()
     {
-        player = FindAnyObjectByType<PlayerMove>().gameObject;
+        player = PlayerController.instance.gameObject;
         rb = GetComponent<Rigidbody2D>();
         objDetector = transform.GetChild(0).gameObject;
         lost = transform.GetChild(1).gameObject;

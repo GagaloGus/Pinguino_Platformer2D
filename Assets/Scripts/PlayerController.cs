@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
-        sprtRenderer = GetComponent<SpriteRenderer>();
+        sprtRenderer = transform.Find("penguin").GetComponent<SpriteRenderer>();
 
         SpawnBulletPosition = transform.Find("spawnBall");
         CenterPos = transform.Find("center");
@@ -428,7 +428,7 @@ public class PlayerController : MonoBehaviour
             {
                 Vector2 colliderPoint = collision.collider.bounds.ClosestPoint(transform.position);
 
-                Vector2 bounceDir = new Vector2(CenterPos.position.x - colliderPoint.x, CenterPos.position.y - colliderPoint.y).normalized;
+                Vector2 bounceDir = new Vector2(CenterPos.position.x - colliderPoint.x, CenterPos.position.y - colliderPoint.y + 5).normalized;
                 Hit(1, bounceDir, collision.collider.gameObject);
             }
         }
