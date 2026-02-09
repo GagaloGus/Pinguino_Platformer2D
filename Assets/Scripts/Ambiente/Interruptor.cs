@@ -5,27 +5,22 @@ using UnityEngine.Events;
 
 public class Interruptor : MonoBehaviour
 {
-    public float activationRadius;
     public AudioClip activationSound;
     public UnityEvent OnActivation;
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        //Si el jugador esta lo suficientemente cerca, y le da al click izq
-        //La funcion asignada desde el inspector (OnActivation) se ejecuta
-        if(Vector3.Distance(transform.position, PlayerController.instance.transform.position) <= activationRadius
-            && Input.GetKeyDown(KeyCode.Mouse0))
+        if (collision.GetComponent<PlayerBullet>() || collision.CompareTag("PlayerAttackBox"))
         {
-            AudioManager.instance.PlaySFX2D(activationSound);
-            OnActivation.Invoke();
+            Activate();
         }
     }
 
-#if UNITY_EDITOR
-    private void OnDrawGizmos()
+    //Cuando el player ataque al interruptor o le tire una bola de nieve
+    //Se invoca la funcion puesta en el insepctor
+    public void Activate()
     {
-        Gizmos.DrawWireSphere(transform.position, activationRadius);
+        AudioManager.instance.PlaySFX2D(activationSound);
+        OnActivation.Invoke();
     }
-#endif
 }

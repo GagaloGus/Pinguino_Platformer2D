@@ -8,7 +8,7 @@ public class CameraController : MonoBehaviour
 
     [Header("Movimiento")]
     public bool followPlayer;
-    public float velocidadCamara = 0.1f;
+    public float velocidadCamara = 3.5f;
     public Vector3 desplazamiento;
 
     [Header("Limites")]
@@ -48,22 +48,34 @@ public class CameraController : MonoBehaviour
         transform.position = Vector3.Lerp(
             transform.position,
             posicionDeseada,
-            velocidadCamara *0.01f
+            velocidadCamara * Time.deltaTime
         );
     }
 
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
+
+        Camera cam = GetComponent<Camera>();
+
+        // Tamaño real de la cámara
+        float halfHeight = cam.orthographicSize;
+        float halfWidth = halfHeight * cam.aspect;
+
+        Vector2 camLimitsMin = new Vector2(limiteMin.x - halfWidth, limiteMin.y - halfHeight);
+        Vector2 camLimitsMax = new Vector2(limiteMax.x + halfWidth, limiteMax.y + halfHeight);
+        float xDist = Mathf.Abs(camLimitsMin.x) + Mathf.Abs(camLimitsMax.x);
+        float yDist = Mathf.Abs(camLimitsMin.y) + Mathf.Abs(camLimitsMax.y);
+
+
         Gizmos.color = Color.red;
         //Esquina minima
-        Gizmos.DrawSphere(transform.position, 3);
-        Gizmos.DrawRay(limiteMin, Vector2.right);
-        Gizmos.DrawRay(limiteMin, new(limiteMin.x, limiteMax.y));
+        Gizmos.DrawRay(camLimitsMin, Vector2.right * xDist);
+        Gizmos.DrawRay(camLimitsMin, Vector2.up * yDist);
 
         //Esquina maxima
-        Gizmos.DrawRay(limiteMax, new(limiteMax.x, limiteMin.y));
-        Gizmos.DrawRay(limiteMax, new(limiteMin.x, limiteMax.y));
+        Gizmos.DrawRay(camLimitsMax, Vector2.left * xDist);
+        Gizmos.DrawRay(camLimitsMax, Vector2.down * yDist);
     }
 #endif
 }

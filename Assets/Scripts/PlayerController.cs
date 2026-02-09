@@ -26,7 +26,6 @@ public class PlayerController : MonoBehaviour
     public float friction = 40f;
     public float slideVelRequired = 10;
     public Vector2 localVel;
-    public float YLevelDeath = -7.5f;
     float inputX;
     Vector2 startPos;
 
@@ -77,7 +76,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
-        sprtRenderer = GetComponent<SpriteRenderer>();
+        sprtRenderer = transform.Find("penguin").GetComponent<SpriteRenderer>();
 
         SpawnBulletPosition = transform.Find("spawnBall");
         CenterPos = transform.Find("center");
@@ -165,12 +164,6 @@ public class PlayerController : MonoBehaviour
             targetSpeedMult,
             runTransitionSpeed * Time.deltaTime
         );
-
-        //Muerte si cae muy abajo
-        if (transform.position.y < YLevelDeath)
-            Death("The void", Vector3.zero);
-
-
     }
 
     void FixedUpdate()
@@ -438,9 +431,17 @@ public class PlayerController : MonoBehaviour
             {
                 Vector2 colliderPoint = collision.collider.bounds.ClosestPoint(transform.position);
 
-                Vector2 bounceDir = new Vector2(CenterPos.position.x - colliderPoint.x, CenterPos.position.y - colliderPoint.y).normalized;
+                Vector2 bounceDir = new Vector2(CenterPos.position.x - colliderPoint.x, CenterPos.position.y - colliderPoint.y + 5).normalized;
                 Hit(1, bounceDir, collision.collider.gameObject);
             }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("DeathZone"))
+        {
+            Death("The void", Vector3.zero);
         }
     }
 
