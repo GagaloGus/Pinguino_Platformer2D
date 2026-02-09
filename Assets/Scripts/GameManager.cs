@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Lives")]
     public int maxLives = 3;
-    public int currentLives;
+    public int currentLives, startingLives;
 
     private void Awake()
     {
@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
        
         highScore = PlayerPrefs.GetInt("HighScore", 0);
         PantallaCarga = transform.Find("Canvas").Find("Pantalla carga").GetComponent<Animator>();
-        currentLives = 3;
+        currentLives = startingLives;
     }
 
     void Start()

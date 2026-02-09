@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8531652018614949471
 RectTransform:
   m_ObjectHideFlags: 0
@@ -157,7 +157,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 500
   m_TargetDisplay: 0
 --- !u!114 &185318688340058775
 MonoBehaviour:
@@ -254,3 +254,4 @@ MonoBehaviour:
   pointsCoinSpecial: 150
   maxLives: 3
   currentLives: 0
+  startingLives: 0

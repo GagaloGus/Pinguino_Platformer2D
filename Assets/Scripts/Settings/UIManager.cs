@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -13,9 +14,12 @@ public class UIManager : MonoBehaviour
     public Sprite fullHeart;
     public Sprite emptyHeart;
 
+    TMP_Text livesText;
+
     private void Awake()
     {
         instance = this;
+        livesText = transform.Find("vidas text").GetComponent<TMP_Text>();
     }
 
     public void UpdateLives(int currentLives)
@@ -27,5 +31,10 @@ public class UIManager : MonoBehaviour
             else
                 hearts[i].sprite = emptyHeart;
         }
+    }
+
+    private void Update()
+    {
+        livesText.text = $"Lives: {PlayerController.instance.life}";
     }
 }
