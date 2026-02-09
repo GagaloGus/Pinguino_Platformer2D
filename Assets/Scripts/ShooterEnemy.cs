@@ -64,6 +64,7 @@ public class ShooterEnemy : Enemy
 
         GameObject bullet = ammo.GetObject();
         bullet.transform.position = transform.position;
+        AudioManager.instance.PlayRandomSFX2D(MusicLibrary.instance.player_shoot_sfxs);
 
         canShoot = false;
         StartCoroutine(ReturnBullet(bullet));

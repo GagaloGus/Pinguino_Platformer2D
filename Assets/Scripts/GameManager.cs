@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour
        
         highScore = PlayerPrefs.GetInt("HighScore", 0);
         PantallaCarga = transform.Find("Canvas").Find("Pantalla carga").GetComponent<Animator>();
+        currentLives = 3;
     }
 
     void Start()

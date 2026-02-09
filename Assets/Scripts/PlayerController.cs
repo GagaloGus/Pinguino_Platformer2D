@@ -83,6 +83,7 @@ public class PlayerController : MonoBehaviour
         Casco = transform.Find("helmet");
         Espada = transform.Find("sword");
 
+        //Funciones que se llaman en situaciones especificas
         onStartCrouch = () =>
         {
             AudioManager.instance.PlayLoopedSFX(MusicLibrary.instance.player_crouching_sfx);
@@ -116,13 +117,12 @@ public class PlayerController : MonoBehaviour
         hasDied = false;
         startPos = transform.position;
         rb.gravityScale = gravityScale;
+        life = GameManager.instance.currentLives;
     }
 
     // Update is called once per frame
     void Update()
     {
-
-
         //Orientacion del collider segun lo que este haciendo el player
         if (isSliding || isCrouching)
             capsuleCollider.direction = CapsuleDirection2D.Horizontal;
@@ -263,7 +263,8 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        if (Input.GetKeyDown(attack_RangeKey) && !isAttacking && !isSliding) //Ataque rango que tambien se puede hacer en el aire
+        //Ataque rango que tambien se puede hacer en el aire
+        if (Input.GetKeyDown(attack_RangeKey) && !isAttacking && !isSliding) 
         {
             StartCoroutine(AttackCoroutine(PlayerMoveStates.AttackRanged));
         }
@@ -366,7 +367,7 @@ public class PlayerController : MonoBehaviour
         });
     }
 
-
+    //Funcion para lanzar al player
     public void AddForceToDir(Vector2 dir, float mult = 10, float frozenTime = 0.3f)
     {
         canMove = false;

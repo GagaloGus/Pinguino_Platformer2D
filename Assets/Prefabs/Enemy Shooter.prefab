@@ -294,10 +294,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5949a30e4b2e61e458d26991f57150b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
-  dir: 1
+  speed: 2
+  maxSpeed: 3
+  dir: -1
   jumpForce: 15
-  health: 0
+  health: 2
   raycastDetection: 1
   raycastDetectionDown: 0.56
   angle: 72.5

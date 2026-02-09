@@ -304,12 +304,12 @@ public class Enemy : MonoBehaviour
             {
                 PlayerController.instance.onChargeOnEnemy(this);
                 GetDamage(PlayerController.instance.dmgChargeAtk);
-                rb.AddForce(Vector2.up * -dir * 25, ForceMode2D.Impulse);
+                rb.AddForce(Vector2.up * dir * 25, ForceMode2D.Impulse);
             }
             else
             {
                 GetDamage(PlayerController.instance.dmgMeleeAtk);
-                rb.AddForce(Vector2.right * -dir * 8, ForceMode2D.Impulse);
+                rb.AddForce(Vector2.right * dir * 8, ForceMode2D.Impulse);
             }
 
         }
