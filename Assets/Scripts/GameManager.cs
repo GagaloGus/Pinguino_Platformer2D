@@ -30,6 +30,10 @@ public class GameManager : MonoBehaviour
     public int pointsCoinGold = 50;
     public int pointsCoinSpecial = 150;
 
+    [Header("Lives")]
+    public int maxLives = 3;
+    public int currentLives;
+
     private void Awake()
     {
         if (instance == null)
@@ -50,8 +54,11 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Time.timeScale = 1f;
+        currentLives = maxLives;
         gameState = GameState.Playing;
         StartLevel();
+
+        UIManager.instance.UpdateLives(currentLives);
     }
 
     public void AddScore(int points)
@@ -90,6 +97,19 @@ public class GameManager : MonoBehaviour
         //coins += points;
     }
 
+    public void LoseLife()
+    {
+        if (gameState != GameState.Playing) return;
+
+        currentLives--;
+        UIManager.instance.UpdateLives(currentLives);
+
+        if (currentLives <= 0)
+        {
+            GameOver();
+        }
+    }
+
     public void ResetRun()
     {
         score = 0;
@@ -120,6 +140,12 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    public void GameOver()
+    {
+        gameState = GameState.GameOver;
+        Time.timeScale = 0f;
+    }
+
     public int GetScore()
     {
         return score;
@@ -128,6 +154,11 @@ public class GameManager : MonoBehaviour
     public int GetHighScore()
     {
         return highScore;
+    }
+
+    public int GetCurrentLives()
+    {
+        return currentLives;
     }
 
     public void Victoria()
