@@ -8,6 +8,10 @@ public class AnimEvents : MonoBehaviour
     public void canIdle()
     {
         GetComponentInParent<Boss>().spawned = true;
+        for (int i = 0; i < GetComponentInParent<Boss>().bossStones.Length; i++)
+        {
+            GetComponentInParent<Boss>().bossStones[i].GetComponentInChildren<StoneBoss>().appear = true;
+        }
     }
 
     public void shieldSpawn()
@@ -20,6 +24,7 @@ public class AnimEvents : MonoBehaviour
     public void HitBoxAct()
     {
         GetComponentInParent<Boss>().hitBoxsetter = true;
+        //AudioManager.instance.PlaySFX2D(MusicLibrary); - Sonido de golpe boss
     }
 
     public void HitBoxDesct()
@@ -27,9 +32,10 @@ public class AnimEvents : MonoBehaviour
         GetComponentInParent<Boss>().hitBoxsetter = false;
         GetComponentInParent<Boss>().animator.SetBool("canAttack", false);
     }
-    void DisableHit()
+    public void DisableHit()
     {
         GetComponent<Animator>().SetBool("getHit", false);
         GetComponentInParent<Boss>().spawned = true;
+        GetComponentInParent<Boss>().canMove = true;
     }
 }

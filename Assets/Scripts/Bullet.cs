@@ -25,7 +25,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player" || collision.gameObject.layer == 3)
+        if (collision.gameObject.layer == 3)
         {
             gameObject.SetActive(false);
         }

@@ -12,6 +12,7 @@ TagManager:
   - Enemy
   - BossHitbox
   - StoneBoss
+  - bulletEnemy
   layers:
   - Default
   - TransparentFX

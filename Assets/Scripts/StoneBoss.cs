@@ -9,7 +9,7 @@ public class StoneBoss : MonoBehaviour
     private Animator animator;
     private CapsuleCollider2D collider;
     public bool appear, destroy, hit, visible =false;
-    public float healthBase = 100, respawnTime = 20f;
+    public float healthBase = 10, respawnTime = 20f;
     private float health;
     void Start()
     {
@@ -44,6 +44,46 @@ public class StoneBoss : MonoBehaviour
         }
     }
 
+    void GetDamage(int dmg)
+    {
+        health -= dmg;
+
+        if (health <= 0)
+        {
+            print("ay");
+            AudioManager.instance.PlaySFX2D(MusicLibrary.instance.enemy_kill_sfx);
+            AudioManager.instance.PlayRandomSFX2D(MusicLibrary.instance.enemy_death_sfxs);
+            GameManager.instance.CreateExplosion(transform, false);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("PlayerAttackBox") && health > 0)
+        {
+            if (PlayerController.instance.isSliding)
+            {
+                animator.SetBool("getHit", true);
+                GetDamage(PlayerController.instance.dmgChargeAtk);
+            }
+            else
+            {
+                animator.SetBool("getHit", true);
+                GetDamage(PlayerController.instance.dmgMeleeAtk);
+            }
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.TryGetComponent(out PlayerBullet bullet) && health > 0)
+        {
+            animator.SetBool("getHit", true);
+            GetDamage(bullet.damage);
+            Destroy(collision.gameObject);
+        }
+    }
+
     IEnumerator Respawn()
     {
         yield return new WaitForSeconds(respawnTime);
@@ -52,14 +92,6 @@ public class StoneBoss : MonoBehaviour
         Boss.GetComponent<Boss>().shield.GetComponent<ShieldBoss>().appear = true;
         Boss.GetComponent<Boss>().canCheck = true;
         Boss.GetComponent<Boss>().canBeHit = false;
-    }
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            animator.SetBool("getHit", true);
-            health -= 25;
-        }
     }
     void DisableAppear()
     {

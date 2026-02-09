@@ -354,8 +354,6 @@ public class PlayerController : MonoBehaviour
         Casco.GetComponent<Rigidbody2D>().velocity = new Vector2(dirX * 0.9f, 0.1f) * multVel;
         Espada.GetComponent<Rigidbody2D>().velocity = new Vector2(dirX * 0.1f, 0.9f) * multVel;
 
-
-
         //Audio
         AudioManager.instance.StopAll();
         AudioManager.instance.PlaySFX2D(MusicLibrary.instance.lego_breaking_sfx);
@@ -427,7 +425,7 @@ public class PlayerController : MonoBehaviour
     {
         if (iFrameCounter <= 0 && !hasDied)
         {
-            if (collision.collider.CompareTag("HurtBox") || collision.collider.GetComponent<Enemy>())
+            if (collision.collider.CompareTag("HurtBox") || collision.collider.GetComponent<Enemy>() || collision.collider.GetComponent<ShooterEnemy>())
             {
                 Vector2 colliderPoint = collision.collider.bounds.ClosestPoint(transform.position);
 
@@ -442,6 +440,21 @@ public class PlayerController : MonoBehaviour
         if (collision.CompareTag("DeathZone"))
         {
             Death("The void", Vector3.zero);
+        }
+        else if (collision.tag == "BossHitbox")
+        {
+            Vector2 colliderPoint = collision.bounds.ClosestPoint(transform.position);
+
+            Vector2 bounceDir = new Vector2(CenterPos.position.x - colliderPoint.x, CenterPos.position.y - colliderPoint.y + 20).normalized;
+            Hit(1, bounceDir, collision.gameObject);
+        }
+        else if(collision.tag == "bulletEnemy")
+        {
+            Vector2 colliderPoint = collision.bounds.ClosestPoint(transform.position);
+
+            Vector2 bounceDir = new Vector2(CenterPos.position.x - colliderPoint.x, CenterPos.position.y - colliderPoint.y + 20).normalized;
+            Hit(1, bounceDir, collision.gameObject);
+            collision.gameObject.SetActive(false);
         }
     }
 

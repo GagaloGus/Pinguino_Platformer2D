@@ -2,15 +2,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Boss : Enemy
+public class Boss : MonoBehaviour
 {
+    public GameObject sprite, hitBox, shield, player, seen, lost;
+
+    [Header("Enemy Movement")]
+    public float speed = 5f;
+    public float dir = -1;
+
+    [Header("Boss stats")]
+    public int health;
+    public int healthBase;
+
+    [Header("Enemy Field of View")]
+    public float angle = 30.0f;
+    public float rayRange = 10.0f;
+    public float coneDirection = 180;
+
+    [Header("Detection Settings")]
+    public LayerMask targetMask;
+    public LayerMask obstructionMask;
+    public float detectionRadius = 2f;
+    public float raycastDetectionDown = 0.5f;
+
+    [Header("Time for search Player")]
+    public float timeLeft = 5f;
+
+    [Header("Actions Check")]
+    public bool isGrounded = false;
+
+    protected Rigidbody2D rb;
+    protected bool wasInside = false, isWaiting = false;
+    protected Vector2 lastLoc;
+
     [Header("Boss Options")]
-    public GameObject sprite, hitBox, shield, player;
     public Animator animator;
     public bool spawned,hitBoxsetter;
-    public bool canCheck, canBeHit = false;
+    public bool canCheck, canBeHit = false, canMove = true;
     public float attackDis = 4f;
-    [HideInInspector] public int healthBase;
 
     [Header("Boss Stones")]
     public GameObject[] bossStones;
@@ -18,7 +47,6 @@ public class Boss : Enemy
     {
         player = PlayerController.instance.gameObject;
         rb = GetComponent<Rigidbody2D>();
-        objDetector = transform.GetChild(0).gameObject;
         lost = transform.GetChild(1).gameObject;
         seen = transform.GetChild(2).gameObject;
         hitBox = transform.GetChild(3).gameObject;
@@ -31,10 +59,8 @@ public class Boss : Enemy
         canCheck = true;
         health = healthBase;
     }
-    protected override void Update()
+    public void Update()
     {
-        //Debug.Log(bossStones[0].GetComponentInChildren<StoneBoss>().visible);
-
         if (canCheck && spawned)
         {
             CheckStones();
@@ -51,7 +77,7 @@ public class Boss : Enemy
                 hitBox.SetActive(false);
             }
 
-            if (IsTargetInCone(player.transform) && spawned)
+            if (IsTargetInCone(player.transform) && spawned && canMove)
             {
                 float dist = Vector2.Distance(transform.position, player.transform.position);
 
@@ -74,10 +100,6 @@ public class Boss : Enemy
                 }
             }
 
-            if (IsTargetInCone(player.transform) == false && canPatrol && PatrolPoints.Count > 0)
-            {
-                Patrol();
-            }
             if (IsTargetInCone(player.transform) == false && wasInside == true && spawned == true)
             {
                 // LLama el método para que este objeto siga siguiendo al objetivo durante un tiempo (Como buscandolo)
@@ -93,15 +115,20 @@ public class Boss : Enemy
         {
             animator.SetBool("death", true);
             animator.SetBool("spawn", false);
-            shield.GetComponent<ShieldBoss>().destroy = true;
+            seen.SetActive(false);
+            lost.SetActive(false);
+            shield.SetActive(false);
+            sprite.GetComponent<CapsuleCollider2D>().enabled = false;
+            rb.gravityScale = 0;
             for (int i = 0; i < bossStones.Length; i++)
             {
                 bossStones[i].transform.GetChild(0).gameObject.GetComponent<StoneBoss>().destroy = true;
+                bossStones[i].transform.GetChild(0).gameObject.GetComponent<StoneBoss>().enabled = false;   
             }
         }
     }
 
-    override protected void Move(Vector2 loc)
+    public void Move(Vector2 loc)
     {
         // Calcula si el objetivo se encuentra a su derecha
         if (transform.position.x - loc.x < 0)
@@ -132,33 +159,10 @@ public class Boss : Enemy
         animator.SetBool("canWalk", true);
     }
 
-    protected void Patrol()
+    public void Search()
     {
-        Vector2 target = PatrolPoints[currentPointIndex];
-
-        if (Mathf.RoundToInt(transform.position.x) != Mathf.RoundToInt(target.x) && isWaiting == false && canJump)
-        {
-            Move(target);
-        }
-        else
-        {
-            StartCoroutine(wait());
-            animator.SetBool("canWalk", false);
-
-            currentPointIndex++;
-
-            if (currentPointIndex >= PatrolPoints.Count)
-            {
-                currentPointIndex = 0;
-            }
-        }
-    }
-
-    protected void Search()
-    {
-        canPatrol = false;
         // Solo se mueve si no ha llegado a la última posición conocida
-        if (Mathf.Abs(transform.position.x - lastLoc.x) > 0.5f && canJump)
+        if (Mathf.Abs(transform.position.x - lastLoc.x) > 0.5f)
         {
             Move(lastLoc);
             seen.SetActive(false);
@@ -174,13 +178,12 @@ public class Boss : Enemy
         {
             wasInside = false;
             timeLeft = 5f;
-            canPatrol = true;
             lost.SetActive(false);
             animator.SetBool("canWalk", false);
         }
     }
 
-    override protected bool IsTargetInCone(Transform target)
+    public bool IsTargetInCone(Transform target)
     {
         Vector3 dirToTarget = (target.position - transform.position);
         float dist = dirToTarget.magnitude;
@@ -188,7 +191,6 @@ public class Boss : Enemy
         // Detección por proximidad (Círculo 360º)
         if (dist <= detectionRadius)
         {
-            canPatrol = false;
             wasInside = true;
             timeLeft = 5f;
             lastLoc = player.transform.position;
@@ -196,6 +198,7 @@ public class Boss : Enemy
             {
                 animator.SetBool("spawn", true);
             }
+            Debug.Log("Visto");
             return true;
         }
 
@@ -208,7 +211,6 @@ public class Boss : Enemy
             RaycastHit2D hit = Physics2D.Raycast(transform.position, dirToTarget.normalized, rayRange, obstructionMask | targetMask);
             if (hit.collider != null && ((1 << hit.collider.gameObject.layer) & targetMask) != 0)
             {
-                canPatrol = false;
                 wasInside = true;
                 timeLeft = 5f;
                 lastLoc = player.transform.position;
@@ -275,14 +277,53 @@ public class Boss : Enemy
             canCheck = true;
         }
     }
+    void GetDamage(int dmg)
+    {
+        health -= dmg;
+        canMove = false;
+        if (health <= 0)
+        {
+            print("ay");
+            AudioManager.instance.PlaySFX2D(MusicLibrary.instance.enemy_kill_sfx);
+            AudioManager.instance.PlayRandomSFX2D(MusicLibrary.instance.enemy_death_sfxs);
+            GameManager.instance.CreateExplosion(transform, false);
+        }
+        else
+        {
+            print("mamon");
+            AudioManager.instance.PlaySFX2D(MusicLibrary.instance.enemy_ow_sfx);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("PlayerAttackBox") && canBeHit && health > 0)
+        {
+            if (PlayerController.instance.isSliding)
+            {
+                animator.SetBool("getHit", true);
+                StartCoroutine("hitCooldown");
+                //PlayerController.instance.onChargeOnEnemy(this);
+                GetDamage(PlayerController.instance.dmgChargeAtk);
+            }
+            else
+            {
+                animator.SetBool("getHit", true);
+                StartCoroutine("hitCooldown");
+                GetDamage(PlayerController.instance.dmgMeleeAtk);
+            }
+        }
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player") && canBeHit)
+        if (collision.collider.TryGetComponent(out PlayerBullet bullet) && canBeHit && health > 0)
         {
             animator.SetBool("getHit", true);
-            health -= 100;
             StartCoroutine("hitCooldown");
+
+            GetDamage(bullet.damage);
+            Destroy(collision.gameObject);
         }
     }
 
@@ -314,15 +355,5 @@ public class Boss : Enemy
         Gizmos.DrawRay(transform.position, upRayDirection);
         Gizmos.DrawRay(transform.position, downRayDirection);
         Gizmos.DrawLine(transform.position + downRayDirection, transform.position + upRayDirection);
-
-        if (PatrolPoints.Count > 0)
-        {
-            for (int i = 0; i < PatrolPoints.Count; i++)
-            {
-                Gizmos.color = Color.white;
-
-                Gizmos.DrawWireSphere(PatrolPoints[i], 1);
-            }
-        }
     }
 }
