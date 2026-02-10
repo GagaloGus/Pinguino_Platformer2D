@@ -7815,7 +7815,6 @@ PrefabInstance:
     - target: {fileID: 2274580959923240257, guid: 7bc65294ce77c1542b3ba89b97c66dd8, type: 3}
       propertyPath: startingLives
       value: 20
-      objectReference: {fileID: 0}
     - target: {fileID: 2411106441949669236, guid: 7bc65294ce77c1542b3ba89b97c66dd8, type: 3}
       propertyPath: m_Name
       value: GameManager
@@ -13036,11 +13035,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3051400998825633099, guid: 00bee37fa906df847ba3bec86f95204a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -17.95
+      value: -17.33
       objectReference: {fileID: 0}
     - target: {fileID: 3051400998825633099, guid: 00bee37fa906df847ba3bec86f95204a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.68
+      value: -3.04
       objectReference: {fileID: 0}
     - target: {fileID: 3051400998825633099, guid: 00bee37fa906df847ba3bec86f95204a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -16393,8 +16392,8 @@ SceneRoots:
   - {fileID: 1741414090}
   - {fileID: 958705278}
   - {fileID: 1136801445}
-  - {fileID: 155393413}
   - {fileID: 83856386}
   - {fileID: 1011911401}
   - {fileID: 1696143924}
   - {fileID: 63577517}
+  - {fileID: 155393413}

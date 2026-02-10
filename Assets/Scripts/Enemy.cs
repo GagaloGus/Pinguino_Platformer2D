@@ -287,6 +287,7 @@ public class Enemy : MonoBehaviour
             print("ay");
             AudioManager.instance.PlaySFX2D(MusicLibrary.instance.enemy_kill_sfx);
             AudioManager.instance.PlayRandomSFX2D(MusicLibrary.instance.enemy_death_sfxs);
+            GameManager.instance.AddScore(GameManager.instance.pointsBaseEnemy);
             GameManager.instance.CreateExplosion(transform, false);
             Destroy(gameObject);
         }
@@ -309,7 +310,7 @@ public class Enemy : MonoBehaviour
         {
             if (PlayerController.instance.isSliding)
             {
-                PlayerController.instance.onChargeOnEnemy(this);
+                PlayerController.instance.onChargeOnEnemy(health);
                 GetDamage(PlayerController.instance.dmgChargeAtk);
                 BumpPlayer(25);
             }

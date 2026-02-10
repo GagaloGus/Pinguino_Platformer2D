@@ -18,7 +18,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Nivel2.unity
     guid: 7d54a08078d73d64ebc12d076b05eef8
   - enabled: 1
-    path: Assets/Scenes/Nivel3 gabo.unity
+    path: Assets/Scenes/Nivel3.unity
     guid: 7b4248926a99529439619014deeb6bba
   - enabled: 1
     path: Assets/Scenes/Nivel3.unity

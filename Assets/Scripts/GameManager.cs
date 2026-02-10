@@ -14,13 +14,14 @@ public class GameManager : MonoBehaviour
 
     [Header("Settings")]
     [Range(0, 1)] public float chancePlayLoadSound = 0.5f;
+    public bool hasDied;
 
     [Header("Game State")]
     public GameState gameState = GameState.Playing;
 
     [Header("Score")]
-    private int score;
-    private int highScore;
+    public int score;
+    public int highScore;
 
     [Header("Score Settings")]
     public int pointsBaseEnemy = 100;
@@ -31,8 +32,8 @@ public class GameManager : MonoBehaviour
     public int pointsCoinSpecial = 150;
 
     [Header("Lives")]
-    public int maxLives = 3;
-    public int currentLives, startingLives;
+    public int currentLives;
+    public int startingLives;
 
     private void Awake()
     {
@@ -49,13 +50,11 @@ public class GameManager : MonoBehaviour
        
         highScore = PlayerPrefs.GetInt("HighScore", 0);
         PantallaCarga = transform.Find("Canvas").Find("Pantalla carga").GetComponent<Animator>();
-        currentLives = startingLives;
     }
 
     void Start()
     {
         Time.timeScale = 1f;
-        currentLives = maxLives;
         gameState = GameState.Playing;
         StartLevel();
 
@@ -173,6 +172,23 @@ public class GameManager : MonoBehaviour
      //   coins += amount;
     }
 
+    public void Death()
+    {
+        currentLives = 0;
+        hasDied = true;
+
+        //Audio
+        AudioManager.instance.StopAll();
+        AudioManager.instance.PlaySFX2D(MusicLibrary.instance.lego_breaking_sfx);
+        AudioClip clip = AudioManager.instance.PlayRandomSFX2D(MusicLibrary.instance.player_die_sfxs);
+
+        CoolFunctions.InvokeDelayed(this, clip.length - 0.15f, () =>
+        {
+            ResetRun();
+            ChangeSceneWithTransition(SceneManager.GetActiveScene().name);
+        });
+    }
+
     public void CreateExplosion(Transform objTransform, bool playSound)
     {
         CreateExplosion(objTransform.position, objTransform.localScale, playSound);
@@ -188,6 +204,12 @@ public class GameManager : MonoBehaviour
 
     public void StartLevel()
     {
+        if (hasDied)
+            currentLives = startingLives;
+        else
+            currentLives += startingLives;
+
+        hasDied = false;
         PantallaCarga.gameObject.SetActive(true);
         PantallaCarga.SetInteger("state", 2);
         AudioManager.instance.StopAllSFX();

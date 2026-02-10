@@ -268,7 +268,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: fb9baac7f1fbc9c478ac1be2390ca20b, type: 3}
   - {fileID: 8300000, guid: 1feaa51a3f594b242b8286af2c35cab9, type: 3}
   - {fileID: 8300000, guid: d0f12bdb4fbd2b0488820812077524a5, type: 3}
-  - {fileID: 8300000, guid: ca186c5b43fb2d8489a6b919153a46d3, type: 3}
+  - {fileID: 8300000, guid: 238fcb5e47643e042954bf595ad39fef, type: 3}
+  - {fileID: 8300000, guid: afe9cf0ca02562146a08b1b78a23bf66, type: 3}
   enemy_death_sfxs:
   - {fileID: 8300000, guid: 817e57a2152719049964262ca2cea480, type: 3}
   - {fileID: 8300000, guid: 314b4ccd7895c5e42944ad02f25dcfa9, type: 3}
@@ -276,6 +277,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b8a2d67c257ca4942abe53d2f42cd8d1, type: 3}
   - {fileID: 8300000, guid: df07ddbe4a134e941b5eee8c7e1bec42, type: 3}
   - {fileID: 8300000, guid: d2d6770e7d293b64bafa41b3d9431eed, type: 3}
+  - {fileID: 8300000, guid: b3c014a71f0867441aa68bd0e91e4103, type: 3}
   enemy_ow_sfx: {fileID: 8300000, guid: f22c0194529801748b31d71bc2e4ee2f, type: 3}
   enemy_kill_sfx: {fileID: 8300000, guid: 3d860e912721bda40bce0b58a453af59, type: 3}
   level_load_sfxs:

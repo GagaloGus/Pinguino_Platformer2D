@@ -35,6 +35,6 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        livesText.text = $"Lives: {PlayerController.instance.life}";
+        livesText.text = $"Lives: {GameManager.instance.currentLives}";
     }
 }

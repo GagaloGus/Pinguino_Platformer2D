@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +12,6 @@ public class PlayerController : MonoBehaviour
     public static PlayerController instance;
 
     [Header("States")]
-    public int life;
     public PlayerMoveStates playerMoveState;
     public bool canMove, isGrounded, isAttacking, isRunning, isSliding, isCrouching, hasDied;
 
@@ -60,8 +58,8 @@ public class PlayerController : MonoBehaviour
     Vector2 raycastPosition => transform.position + transform.up * -1 * raycastStartHeight;
 
     [Header("Callbacks")]
-    public Action onStartCrouch, onStopCrouch, onStartSlide;
-    public Action<Enemy> onChargeOnEnemy;
+    public System.Action onStartCrouch, onStopCrouch, onStartSlide;
+    public System.Action<int> onChargeOnEnemy;
 
     Rigidbody2D rb;
     CapsuleCollider2D capsuleCollider;
@@ -99,12 +97,12 @@ public class PlayerController : MonoBehaviour
             AudioManager.instance.PlaySFX2D(MusicLibrary.instance.player_slide_sfx);
         };
 
-        onChargeOnEnemy = (Enemy enemy) =>
+        onChargeOnEnemy = (int enemyLife) =>
         {
             //No muere por impacto
-            if (enemy.health > dmgChargeAtk)
+            if (enemyLife > dmgChargeAtk)
             {
-                Vector2 bounceDir = new Vector2(CenterPos.position.x - enemy.transform.position.x, 10).normalized;
+                Vector2 bounceDir = new Vector2(transform.localScale.x, 10).normalized;
                 AddForceToDir(bounceDir, 10);
                 AudioManager.instance.PlaySFX2D(MusicLibrary.instance.player_bump_sfx);
             }
@@ -117,7 +115,6 @@ public class PlayerController : MonoBehaviour
         hasDied = false;
         startPos = transform.position;
         rb.gravityScale = gravityScale;
-        life = GameManager.instance.currentLives;
     }
 
     // Update is called once per frame
@@ -183,7 +180,7 @@ public class PlayerController : MonoBehaviour
         Move();
 
         //Aplica una fuerza para que el jugador se "pegue" al suelo
-        if (Mathf.Abs(localVel.x) > 2f && isGrounded && (isRunning || isSliding))
+        if (Mathf.Abs(localVel.x) > 4f && isGrounded && (isRunning || isSliding))
             rb.gravityScale = 0;
         else
             rb.gravityScale = gravityScale;
@@ -264,7 +261,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //Ataque rango que tambien se puede hacer en el aire
-        if (Input.GetKeyDown(attack_RangeKey) && !isAttacking && !isSliding) 
+        if (Input.GetKeyDown(attack_RangeKey) && !isAttacking && !isSliding)
         {
             StartCoroutine(AttackCoroutine(PlayerMoveStates.AttackRanged));
         }
@@ -306,11 +303,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //El jugador ha recibido daño
+    //El jugador ha recibido daï¿½o
     public void Hit(int healthReduce, Vector2 bounceDir, GameObject hitObject)
     {
-        life -= healthReduce;
-        if (life <= 0)
+        GameManager.instance.currentLives -= healthReduce;
+        if (GameManager.instance.currentLives <= 0)
         {
             Death(hitObject.name, hitObject.transform.position);
         }
@@ -325,9 +322,9 @@ public class PlayerController : MonoBehaviour
     //El jugador ha muerto
     public void Death(string killer, Vector3 killerPos)
     {
+        GameManager.instance.Death();
         print($"Morio por: {killer}");
         CameraController.instance.followPlayer = false;
-        life = 0;
         hasDied = true;
         canMove = false;
 
@@ -354,17 +351,9 @@ public class PlayerController : MonoBehaviour
         Espada.position = transform.position;
 
         Casco.GetComponent<Rigidbody2D>().velocity = new Vector2(dirX * 0.9f, 0.1f) * multVel;
+        Casco.GetComponent<Rigidbody2D>().angularVelocity = Random.Range(-3f, 3f) * 1000;
         Espada.GetComponent<Rigidbody2D>().velocity = new Vector2(dirX * 0.1f, 0.9f) * multVel;
-
-        //Audio
-        AudioManager.instance.StopAll();
-        AudioManager.instance.PlaySFX2D(MusicLibrary.instance.lego_breaking_sfx);
-        AudioClip clip = AudioManager.instance.PlayRandomSFX2D(MusicLibrary.instance.player_die_sfxs);
-
-        CoolFunctions.InvokeDelayed(this, clip.length - 0.15f, () => { 
-            GameManager.instance.ResetRun();
-            LevelManager.instance.ReloadScene(); 
-        });
+        Espada.GetComponent<Rigidbody2D>().angularVelocity = Random.Range(-3f, 3f) * 1000;
     }
 
     //Funcion para lanzar al player
@@ -454,9 +443,9 @@ public class PlayerController : MonoBehaviour
         {
             if (collision.tag == "BossHitbox")
             {
-                Vector2 colliderPoint = collision.bounds.ClosestPoint(transform.position);
-                Vector2 bounceDir = new Vector2(CenterPos.position.x - colliderPoint.x, CenterPos.position.y - colliderPoint.y + 5).normalized;
-                Hit(1, bounceDir, collision.gameObject);
+                int dirToLaunch = (int)Mathf.Sign(transform.position.x - collision.transform.parent.position.x);
+                Vector2 bounceDir = Vector2.right * dirToLaunch * 3 + Vector2.up * 3;
+                Hit(2, bounceDir, collision.gameObject);
             }
             else if (collision.tag == "bulletEnemy")
             {

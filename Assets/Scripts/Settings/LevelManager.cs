@@ -36,7 +36,6 @@ public class LevelManager : MonoBehaviour
 
     public void PasarNivel(string levelName)
     {
-        PlayerController.instance.life += GameManager.instance.startingLives;
         GameManager.instance.ChangeSceneWithTransition(levelName);
     }
 }

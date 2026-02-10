@@ -288,6 +288,7 @@ public class Boss : MonoBehaviour
         if (health <= 0)
         {
             print("ay");
+            AudioManager.instance.StopAmbientMusic();
             AudioManager.instance.PlaySFX2D(MusicLibrary.instance.enemy_kill_sfx);
             AudioManager.instance.PlayRandomSFX2D(MusicLibrary.instance.enemy_death_sfxs);
             GameManager.instance.CreateExplosion(transform, false);
@@ -307,7 +308,7 @@ public class Boss : MonoBehaviour
             {
                 animator.SetBool("getHit", true);
                 StartCoroutine("hitCooldown");
-                //PlayerController.instance.onChargeOnEnemy(this);
+                PlayerController.instance.onChargeOnEnemy(health);
                 GetDamage(PlayerController.instance.dmgChargeAtk);
             }
             else
