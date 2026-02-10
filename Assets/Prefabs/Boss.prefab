@@ -500,7 +500,7 @@ MonoBehaviour:
   speed: 1
   dir: 1
   health: 0
-  healthBase: 100
+  healthBase: 50
   angle: 42.4
   rayRange: 12.47
   coneDirection: 180

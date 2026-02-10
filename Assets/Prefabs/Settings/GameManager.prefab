@@ -254,4 +254,4 @@ MonoBehaviour:
   pointsCoinSpecial: 150
   maxLives: 3
   currentLives: 0
-  startingLives: 0
+  startingLives: 3

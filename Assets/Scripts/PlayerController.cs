@@ -427,10 +427,15 @@ public class PlayerController : MonoBehaviour
     {
         if (iFrameCounter <= 0 && !hasDied)
         {
-            if (collision.collider.CompareTag("HurtBox") || collision.collider.GetComponent<Enemy>() || collision.collider.GetComponent<ShooterEnemy>())
+            if (collision.collider.CompareTag("HurtBox"))
             {
-                Vector2 colliderPoint = collision.collider.bounds.ClosestPoint(transform.position);
+                Hit(1, Vector2.up, collision.collider.gameObject);
+            }
 
+            if(collision.collider.TryGetComponent(out Enemy enemy))
+            {
+                enemy.BumpPlayer(10);
+                Vector2 colliderPoint = collision.collider.bounds.ClosestPoint(transform.position);
                 Vector2 bounceDir = new Vector2(CenterPos.position.x - colliderPoint.x, CenterPos.position.y - colliderPoint.y + 5).normalized;
                 Hit(1, bounceDir, collision.collider.gameObject);
             }
@@ -439,25 +444,29 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+
         if (collision.CompareTag("DeathZone"))
         {
             Death("The void", Vector3.zero);
         }
-        else if (collision.tag == "BossHitbox")
-        {
-            Vector2 colliderPoint = collision.bounds.ClosestPoint(transform.position);
 
-            Vector2 bounceDir = new Vector2(CenterPos.position.x - colliderPoint.x, CenterPos.position.y - colliderPoint.y + 20).normalized;
-            Hit(1, bounceDir, collision.gameObject);
-        }
-        else if(collision.tag == "bulletEnemy")
+        if (iFrameCounter <= 0 && !hasDied)
         {
-            Vector2 colliderPoint = collision.bounds.ClosestPoint(transform.position);
-
-            Vector2 bounceDir = new Vector2(CenterPos.position.x - colliderPoint.x, CenterPos.position.y - colliderPoint.y + 20).normalized;
-            Hit(1, bounceDir, collision.gameObject);
-            collision.gameObject.SetActive(false);
+            if (collision.tag == "BossHitbox")
+            {
+                Vector2 colliderPoint = collision.bounds.ClosestPoint(transform.position);
+                Vector2 bounceDir = new Vector2(CenterPos.position.x - colliderPoint.x, CenterPos.position.y - colliderPoint.y + 5).normalized;
+                Hit(1, bounceDir, collision.gameObject);
+            }
+            else if (collision.tag == "bulletEnemy")
+            {
+                Vector2 colliderPoint = collision.bounds.ClosestPoint(transform.position);
+                Vector2 bounceDir = new Vector2(CenterPos.position.x - colliderPoint.x, CenterPos.position.y - colliderPoint.y + 5).normalized;
+                Hit(1, bounceDir, collision.gameObject);
+                collision.gameObject.SetActive(false);
+            }
         }
+
     }
 
 #if UNITY_EDITOR

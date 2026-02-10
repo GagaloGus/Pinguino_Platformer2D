@@ -156,11 +156,12 @@ public class Enemy : MonoBehaviour
             coneDirection = 180f;
         }
         // Una vez visto hacia que direccion moverse, procede a acelerar
-        Vector2 move = new Vector2(dir, 0f) * speed;
+        Vector2 move = new Vector2(dir, 0f) * speed * Time.deltaTime * 750;
         rb.AddForce(move);
         if (Mathf.Abs(rb.velocity.x) > maxSpeed)
-            rb.velocity = new(maxSpeed, rb.velocity.y);
+            rb.velocity = new Vector2(Mathf.Sign(rb.velocity.x) * maxSpeed, rb.velocity.y);
     }
+
     protected void Patrol()
     {
         Vector2 target = PatrolPoints[currentPointIndex];
@@ -296,6 +297,12 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    public void BumpPlayer(float force)
+    {
+        int dirToLaunch = (int)Mathf.Sign(transform.position.x - player.transform.position.x);
+        rb.AddForce(Vector2.right * dirToLaunch * force, ForceMode2D.Impulse);
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("PlayerAttackBox"))
@@ -304,12 +311,12 @@ public class Enemy : MonoBehaviour
             {
                 PlayerController.instance.onChargeOnEnemy(this);
                 GetDamage(PlayerController.instance.dmgChargeAtk);
-                rb.AddForce(Vector2.up * dir * 25, ForceMode2D.Impulse);
+                BumpPlayer(25);
             }
             else
             {
                 GetDamage(PlayerController.instance.dmgMeleeAtk);
-                rb.AddForce(Vector2.right * dir * 8, ForceMode2D.Impulse);
+                BumpPlayer(8);
             }
 
         }
