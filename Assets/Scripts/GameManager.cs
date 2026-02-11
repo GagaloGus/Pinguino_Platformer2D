@@ -134,11 +134,17 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
     }
 
+    public void RestartLevel()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
     public void RestartGame()
     {
         ResetRun();
         Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene("Nivel1");
     }
 
     public void GameOver()
