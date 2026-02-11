@@ -208,6 +208,9 @@ public class GameManager : MonoBehaviour
         PantallaCarga.SetInteger("state", 2);
         AudioManager.instance.StopAllSFX();
         AudioManager.instance.PlaySFX2D(MusicLibrary.instance.door_close_sfx);
+
+        // para actualizar corazones
+        UIManager.instance.UpdateLives(currentLives);
     }
 
     public void ChangeSceneWithTransition(string sceneName)
