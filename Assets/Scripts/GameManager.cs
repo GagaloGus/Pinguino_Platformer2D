@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Lives")]
     public int currentLives;
-    public int startingLives;
+    public int startingLives = 5;
 
     private void Awake()
     {
@@ -56,6 +56,9 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         gameState = GameState.Playing;
+
+        currentLives = startingLives;
+
         StartLevel();
 
         UIManager.instance.UpdateLives(currentLives);
@@ -94,7 +97,6 @@ public class GameManager : MonoBehaviour
         }
 
         AddScore(points);
-        //coins += points;
     }
 
     public void LoseLife()
@@ -113,7 +115,6 @@ public class GameManager : MonoBehaviour
     public void ResetRun()
     {
         score = 0;
-        //coins = 0;
         gameState = GameState.Playing;
     }
 
@@ -167,11 +168,6 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
     }
 
-    public void GetCoins(int amount)
-    {
-     //   coins += amount;
-    }
-
     public void Death()
     {
         currentLives = 0;
@@ -206,14 +202,15 @@ public class GameManager : MonoBehaviour
     {
         if (hasDied)
             currentLives = startingLives;
-        else
-            currentLives += startingLives;
 
         hasDied = false;
         PantallaCarga.gameObject.SetActive(true);
         PantallaCarga.SetInteger("state", 2);
         AudioManager.instance.StopAllSFX();
         AudioManager.instance.PlaySFX2D(MusicLibrary.instance.door_close_sfx);
+
+        // para actualizar corazones
+        UIManager.instance.UpdateLives(currentLives);
     }
 
     public void ChangeSceneWithTransition(string sceneName)

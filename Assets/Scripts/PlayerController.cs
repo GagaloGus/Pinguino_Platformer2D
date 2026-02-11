@@ -307,6 +307,9 @@ public class PlayerController : MonoBehaviour
     public void Hit(int healthReduce, Vector2 bounceDir, GameObject hitObject)
     {
         GameManager.instance.currentLives -= healthReduce;
+
+        UIManager.instance.UpdateLives(GameManager.instance.currentLives);
+
         if (GameManager.instance.currentLives <= 0)
         {
             Death(hitObject.name, hitObject.transform.position);
