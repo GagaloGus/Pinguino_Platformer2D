@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Lives")]
     public int currentLives;
-    public int startingLives = 3;
+    public int startingLives = 5;
 
     private void Awake()
     {
