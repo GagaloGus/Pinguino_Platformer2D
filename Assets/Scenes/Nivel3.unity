@@ -3146,9 +3146,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1696143918}
+      - m_Target: {fileID: 1696143920}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: RestartGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5221,7 +5221,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1696143920}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: RestartGame
+        m_MethodName: RestartLvl
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14342,7 +14342,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 126.1725, y: -22.372}
+  m_AnchoredPosition: {x: 126.1725, y: -22.372002}
   m_SizeDelta: {x: 252.345, y: 44.744}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1120644357
