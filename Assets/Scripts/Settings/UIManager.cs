@@ -10,25 +10,28 @@ public class UIManager : MonoBehaviour
     public static UIManager instance;
 
     [Header("Lives UI")]
-    public Image[] hearts;
     public Sprite fullHeart;
     public Sprite emptyHeart;
-
-    public GameObject pauseMenu;
+    Transform HeartsContainer;
+    GameObject pauseMenu;
 
     private void Awake()
     {
         instance = this;
+        HeartsContainer = transform.Find("HeartsContainer");
+        pauseMenu = transform.Find("PauseMenu").gameObject;
     }
 
-    public void UpdateLives(int currentLives)
+    public void UpdateLives()
     {
-        for (int i = 0; i < hearts.Length; i++)
+        for (int i = 0; i < HeartsContainer.childCount; i++)
         {
-            if (i < currentLives)
-                hearts[i].sprite = fullHeart;
+            GameObject heart = HeartsContainer.GetChild(i).gameObject;
+            heart.SetActive(i < GameManager.instance.currentLives);
+            /*if (i < GameManager.instance.currentLives)
+                heart.sprite = fullHeart;
             else
-                hearts[i].sprite = emptyHeart;
+                heart.sprite = emptyHeart;*/
         }
     }
 
@@ -41,6 +44,8 @@ public class UIManager : MonoBehaviour
             else
                 PauseGame();
         }
+
+        UpdateLives();
     }
 
     public void PauseGame()

@@ -14,7 +14,9 @@ public class GameManager : MonoBehaviour
 
     [Header("Settings")]
     [Range(0, 1)] public float chancePlayLoadSound = 0.5f;
+    [Range(0, 1)] public float chancePlaySecondDeathSound = 0.5f;
     public bool hasDied;
+    AudioClip lastDeathAudio;
 
     [Header("Game State")]
     public GameState gameState = GameState.Playing;
@@ -33,7 +35,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Lives")]
     public int currentLives;
-    public int startingLives = 5;
+    public int startingLives = 5, maxLives = 16;
 
     private void Awake()
     {
@@ -60,8 +62,6 @@ public class GameManager : MonoBehaviour
         currentLives = startingLives;
 
         StartLevel();
-
-        UIManager.instance.UpdateLives(currentLives);
     }
 
     public void AddScore(int points)
@@ -104,7 +104,6 @@ public class GameManager : MonoBehaviour
         if (gameState != GameState.Playing) return;
 
         currentLives--;
-        UIManager.instance.UpdateLives(currentLives);
 
         if (currentLives <= 0)
         {
@@ -182,9 +181,35 @@ public class GameManager : MonoBehaviour
         //Audio
         AudioManager.instance.StopAll();
         AudioManager.instance.PlaySFX2D(MusicLibrary.instance.lego_breaking_sfx);
-        AudioClip clip = AudioManager.instance.PlayRandomSFX2D(MusicLibrary.instance.player_die_sfxs);
 
-        CoolFunctions.InvokeDelayed(this, clip.length - 0.15f, () =>
+        AudioClip clip;
+        float length = 0;
+
+        do
+        {
+            clip = MusicLibrary.instance.GetRandomClip(MusicLibrary.instance.player_die_sfxs);
+        }
+        while (clip == lastDeathAudio);
+
+        AudioManager.instance.PlaySFX2D(clip);
+
+        if(Random.value < chancePlaySecondDeathSound)
+        {
+            AudioClip clip2;
+            do
+            {
+                clip2 = MusicLibrary.instance.GetRandomClip(MusicLibrary.instance.player_die_sfxs);
+            }
+            while (clip2 == clip || clip2 == lastDeathAudio);
+            AudioManager.instance.PlaySFX2D(clip2);
+            length = Mathf.Min(clip.length, clip2.length);
+        }
+        else
+            length = clip.length;
+
+        lastDeathAudio = clip;
+
+        CoolFunctions.InvokeDelayed(this, Mathf.Clamp(length - 0.15f, 0, 8), () =>
         {
             ResetRun();
             ChangeSceneWithTransition(SceneManager.GetActiveScene().name);
@@ -214,9 +239,6 @@ public class GameManager : MonoBehaviour
         PantallaCarga.SetInteger("state", 2);
         AudioManager.instance.StopAllSFX();
         AudioManager.instance.PlaySFX2D(MusicLibrary.instance.door_close_sfx);
-
-        // para actualizar corazones
-        UIManager.instance.UpdateLives(currentLives);
     }
 
     public void ChangeSceneWithTransition(string sceneName)

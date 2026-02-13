@@ -308,8 +308,6 @@ public class PlayerController : MonoBehaviour
     {
         GameManager.instance.currentLives -= healthReduce;
 
-        UIManager.instance.UpdateLives(GameManager.instance.currentLives);
-
         if (GameManager.instance.currentLives <= 0)
         {
             Death(hitObject.name, hitObject.transform.position);

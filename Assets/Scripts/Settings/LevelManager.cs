@@ -36,6 +36,7 @@ public class LevelManager : MonoBehaviour
 
     public void PasarNivel(string levelName)
     {
+        GameManager.instance.currentLives = Mathf.Clamp(GameManager.instance.currentLives + 3, 0, GameManager.instance.maxLives);
         GameManager.instance.ChangeSceneWithTransition(levelName);
     }
 }

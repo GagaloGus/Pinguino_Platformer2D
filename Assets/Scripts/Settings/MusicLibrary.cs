@@ -40,4 +40,9 @@ public class MusicLibrary : MonoBehaviour
     {
         instance = this;
     }
+
+    public AudioClip GetRandomClip(AudioClip[] clips)
+    {
+        return clips[Random.Range(0, clips.Length)];
+    }
 }

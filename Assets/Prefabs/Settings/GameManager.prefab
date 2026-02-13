@@ -256,4 +256,5 @@ MonoBehaviour:
   pointsCoinGold: 50
   pointsCoinSpecial: 150
   currentLives: 0
-  startingLives: 3
+  startingLives: 5
+  maxLives: 16

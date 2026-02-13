@@ -325,6 +325,7 @@ public class Enemy : MonoBehaviour
         if (collision.CompareTag("DeathZone"))
         {
             AudioManager.instance.PlaySFX2D(MusicLibrary.instance.enemy_ow_sfx);
+            GameManager.instance.CreateExplosion(transform, false);
             Destroy(gameObject);
         }
     }
