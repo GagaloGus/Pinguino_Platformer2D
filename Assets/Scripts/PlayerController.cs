@@ -166,7 +166,7 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         //Rayos disparados hacia el suelo
-        RaycastHit2D groundedCast = Physics2D.Raycast(raycastPosition, transform.up * -1, ray_groundedDistance, LayerMask.GetMask("Ground"));
+        RaycastHit2D groundedCast = Physics2D.Raycast(raycastPosition, transform.up * -1, ray_groundedDistance, LayerMask.GetMask("Ground", "CanBeGround"));
         RaycastHit2D groundCheckCast = Physics2D.Raycast(raycastPosition, transform.up * -1, ray_groundAngleDistance, LayerMask.GetMask("Ground"));
 
         isGrounded = groundedCast.collider != null;

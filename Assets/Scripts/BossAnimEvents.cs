@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using UnityEngine;
 
-public class AnimEvents : MonoBehaviour
+public class BossAnimEvents : MonoBehaviour
 {
     public void canIdle()
     {

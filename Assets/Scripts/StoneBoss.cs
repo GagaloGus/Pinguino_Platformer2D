@@ -11,6 +11,7 @@ public class StoneBoss : MonoBehaviour
     public bool appear, destroy, hit, visible =false;
     public float healthBase = 10, respawnTime = 20f;
     private float health;
+    SpriteRenderer Connection;
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -18,6 +19,7 @@ public class StoneBoss : MonoBehaviour
         collider.enabled = false;
         health = healthBase;
         Boss = FindAnyObjectByType<Boss>().gameObject;
+        Connection = transform.Find("Connect").GetComponent<SpriteRenderer>();
     }
     void Update()
     {
@@ -42,6 +44,19 @@ public class StoneBoss : MonoBehaviour
             visible = false;
             collider.enabled = false;
         }
+
+        ConnectWithBoss();
+    }
+
+    void ConnectWithBoss()
+    {
+        Vector2 bossVector = Boss.transform.position - transform.position;
+        Vector2 centerPoint = new Vector2((Boss.transform.position.x + transform.position.x) / 2, (Boss.transform.position.y + transform.position.y) / 2);
+
+        Connection.transform.up = bossVector;
+        Connection.transform.position = centerPoint;
+        Connection.size = new Vector2(Connection.size.x, bossVector.magnitude);
+
     }
 
     void GetDamage(int dmg)
@@ -84,6 +99,7 @@ public class StoneBoss : MonoBehaviour
         }
     }
 
+    //Eventos de animacion
     IEnumerator Respawn()
     {
         yield return new WaitForSeconds(respawnTime);
@@ -108,4 +124,29 @@ public class StoneBoss : MonoBehaviour
         animator.SetBool("canDestroy", false);
         destroy = false;
     }
+
+#if UNITY_EDITOR
+
+    private void OnValidate()
+    {
+        if (Boss == null)
+            Boss = FindAnyObjectByType<Boss>().gameObject;
+        if (Connection == null)
+            Connection = transform.Find("Connect").GetComponent<SpriteRenderer>();
+        ConnectWithBoss();
+    }
+    private void OnDrawGizmos()
+    {
+        if(Boss == null)
+            Boss = FindAnyObjectByType<Boss>().gameObject;
+
+        Vector2 bossVector = Boss.transform.position - transform.position;
+        Vector2 centerPoint = new Vector2((Boss.transform.position.x + transform.position.x) / 2, (Boss.transform.position.y + transform.position.y) / 2);
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawRay(transform.position, bossVector);
+
+        Gizmos.DrawWireSphere(centerPoint, 0.5f);
+    }
+#endif
 }
