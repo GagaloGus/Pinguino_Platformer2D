@@ -334,9 +334,11 @@ public class Boss : MonoBehaviour
 
     IEnumerator hitCooldown()
     {
+        sprite.GetComponent<SpriteRenderer>().color = new Color32(255, 153, 153, 255);
         canBeHit = false;
         yield return new WaitForSeconds(2f);
         canBeHit = true;
+        sprite.GetComponent<SpriteRenderer>().color = new Color32(255, 255, 255, 255);
     }
 
     protected void OnDrawGizmos()
