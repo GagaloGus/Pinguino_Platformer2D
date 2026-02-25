@@ -60,11 +60,6 @@ public class UIManager : MonoBehaviour
         GameManager.instance.ResumeGame();
     }
 
-    public void RestartLvl()
-    {
-        pauseMenu.SetActive(false);
-        GameManager.instance.RestartLevel();
-    }
 
     public void RestartGame()
     {
