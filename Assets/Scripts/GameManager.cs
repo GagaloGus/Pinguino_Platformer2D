@@ -26,8 +26,6 @@ public class GameManager : MonoBehaviour
     public int highScore;
 
     [Header("Score Settings")]
-    public int pointsBaseEnemy = 100;
-
     public int pointsCoinBronze = 10;
     public int pointsCoinSilver = 25;
     public int pointsCoinGold = 50;

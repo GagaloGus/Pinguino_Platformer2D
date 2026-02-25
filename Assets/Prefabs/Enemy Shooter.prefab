@@ -299,6 +299,7 @@ MonoBehaviour:
   dir: -1
   jumpForce: 15
   health: 2
+  poinstOnDeath: 200
   raycastDetection: 1
   raycastDetectionDown: 0.56
   angle: 72.5
