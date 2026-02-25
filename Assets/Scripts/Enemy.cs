@@ -16,6 +16,9 @@ public class Enemy : MonoBehaviour
     [Header("Enemy stats")]
     public int health;
 
+    [Header("Score")]
+    public int poinstOnDeath = 100;
+
     [Header("Obstacle Detection")]
     public float raycastDetection = 1;
     public float raycastDetectionDown = 0.5f;
@@ -287,7 +290,7 @@ public class Enemy : MonoBehaviour
             print("ay");
             AudioManager.instance.PlaySFX2D(MusicLibrary.instance.enemy_kill_sfx);
             AudioManager.instance.PlayRandomSFX2D(MusicLibrary.instance.enemy_death_sfxs);
-            GameManager.instance.AddScore(GameManager.instance.pointsBaseEnemy);
+            GameManager.instance.AddScore(poinstOnDeath);
             GameManager.instance.CreateExplosion(transform, false);
             Destroy(gameObject);
         }

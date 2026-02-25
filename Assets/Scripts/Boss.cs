@@ -15,6 +15,9 @@ public class Boss : MonoBehaviour
     public int health;
     public int healthBase;
 
+    [Header("Score")]
+    public int pointsOnDeath = 1500;
+
     [Header("Enemy Field of View")]
     public float angle = 30.0f;
     public float rayRange = 10.0f;
@@ -291,6 +294,7 @@ public class Boss : MonoBehaviour
             AudioManager.instance.StopAmbientMusic();
             AudioManager.instance.PlaySFX2D(MusicLibrary.instance.enemy_kill_sfx);
             AudioManager.instance.PlayRandomSFX2D(MusicLibrary.instance.enemy_death_sfxs);
+            GameManager.instance.AddScore(pointsOnDeath);
             GameManager.instance.CreateExplosion(transform, false);
         }
         else
