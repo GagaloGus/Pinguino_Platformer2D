@@ -9520,6 +9520,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6207242731675362353, guid: 83d341697c0b0e14588b4c1b71a062a1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 811513277}
+    - target: {fileID: 6207242731675362353, guid: 83d341697c0b0e14588b4c1b71a062a1, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PauseGame
+      objectReference: {fileID: 0}
     - target: {fileID: 6651853392791751495, guid: 83d341697c0b0e14588b4c1b71a062a1, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -9741,6 +9749,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83d341697c0b0e14588b4c1b71a062a1, type: 3}
+--- !u!114 &811513277 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 487492313421688055, guid: 83d341697c0b0e14588b4c1b71a062a1, type: 3}
+  m_PrefabInstance: {fileID: 811513276}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f07852f715a365148851608cc418d015, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &816880683
 GameObject:
   m_ObjectHideFlags: 0
