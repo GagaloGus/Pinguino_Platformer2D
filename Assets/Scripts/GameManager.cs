@@ -9,26 +9,38 @@ public class GameManager : MonoBehaviour
 {
 
     public static GameManager instance;
-
     public GameObject Prefab_Explosion;
+    Animator PantallaCarga;
+
+    [Header("Settings")]
+    [Range(0, 1)] public float chancePlayLoadSound = 0.5f;
+    [Range(0, 1)] public float chancePlaySecondDeathSound = 0.5f;
+    public bool hasDied;
+    AudioClip lastDeathAudio;
 
     [Header("Game State")]
     public GameState gameState = GameState.Playing;
 
     [Header("Score")]
-    private int score;
-    private int highScore;
-    private int coins;
+    public int score;
+    public int highScore;
+
+    [Header("Score Settings")]
+    public int pointsCoinBronze = 10;
+    public int pointsCoinSilver = 25;
+    public int pointsCoinGold = 50;
+    public int pointsCoinSpecial = 150;
 
     [Header("Lives")]
-    private int maxLives = 3;
-    private int currentLives;
+    public int currentLives;
+    public int startingLives = 5, maxLives = 16;
 
     private void Awake()
     {
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);
 
         } else
         {
@@ -37,25 +49,18 @@ public class GameManager : MonoBehaviour
         }
        
         highScore = PlayerPrefs.GetInt("HighScore", 0);
-
+        PantallaCarga = transform.Find("Canvas").Find("Pantalla carga").GetComponent<Animator>();
     }
 
     void Start()
     {
         Time.timeScale = 1f;
-        score = 0;
         gameState = GameState.Playing;
 
-        AudioManager.instance.PlayAmbientMusic(MusicLibrary.instance.level1_song);
+        currentLives = startingLives;
+
+        StartLevel();
     }
-
-    public void LoadScene(string sceneName)
-    {
-        SceneManager.LoadScene(sceneName);
-        print($"loaded scene {sceneName}");
-    }
-
-
 
     public void AddScore(int points)
     {
@@ -69,17 +74,45 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void AddCoinScore(int coinType)
+    {
+        int points = 0;
+
+        switch (coinType)
+        {
+            case 0:
+                points = pointsCoinBronze;
+                break;
+            case 1:
+                points = pointsCoinSilver;
+                break;
+            case 2:
+                points = pointsCoinGold;
+                break;
+            case 3:
+                points = pointsCoinSpecial;
+                break;
+        }
+
+        AddScore(points);
+    }
+
     public void LoseLife()
     {
-        if(gameState != GameState.Playing) return;
+        if (gameState != GameState.Playing) return;
 
-        currentLives --;
-
+        currentLives--;
 
         if (currentLives <= 0)
         {
             GameOver();
         }
+    }
+
+    public void ResetRun()
+    {
+        score = 0;
+        gameState = GameState.Playing;
     }
 
     public void PauseGame()
@@ -100,16 +133,15 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
+        ResetRun();
         Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene("Nivel1");
     }
 
-    void GameOver()
+    public void GameOver()
     {
         gameState = GameState.GameOver;
         Time.timeScale = 0f;
-
-        // lo que se debería cargar cuando se acabe
     }
 
     public int GetScore()
@@ -122,7 +154,7 @@ public class GameManager : MonoBehaviour
         return highScore;
     }
 
-    public int GetLives()
+    public int GetCurrentLives()
     {
         return currentLives;
     }
@@ -133,21 +165,101 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
     }
 
-    public void GetCoins(int amount)
+    public void Death()
     {
-        coins += amount;
+        currentLives = 0;
+        hasDied = true;
+
+        //Audio
+        AudioManager.instance.StopAll();
+        AudioManager.instance.PlaySFX2D(MusicLibrary.instance.lego_breaking_sfx);
+
+        AudioClip clip;
+        float length = 0;
+
+        do
+        {
+            clip = MusicLibrary.instance.GetRandomClip(MusicLibrary.instance.player_die_sfxs);
+        }
+        while (clip == lastDeathAudio);
+
+        AudioManager.instance.PlaySFX2D(clip);
+
+        if(Random.value < chancePlaySecondDeathSound)
+        {
+            AudioClip clip2;
+            do
+            {
+                clip2 = MusicLibrary.instance.GetRandomClip(MusicLibrary.instance.player_die_sfxs);
+            }
+            while (clip2 == clip || clip2 == lastDeathAudio);
+            AudioManager.instance.PlaySFX2D(clip2);
+            length = Mathf.Min(clip.length, clip2.length);
+        }
+        else
+            length = clip.length;
+
+        lastDeathAudio = clip;
+
+        CoolFunctions.InvokeDelayed(this, Mathf.Clamp(length - 0.15f, 0, 8), () =>
+        {
+            ResetRun();
+            ChangeSceneWithTransition(SceneManager.GetActiveScene().name);
+        });
     }
 
-    public void CreateExplosion(Transform objTransform)
+    public void CreateExplosion(Transform objTransform, bool playSound)
     {
-        CreateExplosion(objTransform.position, objTransform.localScale);
+        CreateExplosion(objTransform.position, objTransform.localScale, playSound);
     }
 
-    public void CreateExplosion(Vector3 position, Vector3 localScale)
+    public void CreateExplosion(Vector3 position, Vector3 localScale, bool playSound)
     {
         Transform kaput = Instantiate(Prefab_Explosion).transform;
+        AudioManager.instance.PlayRandomSFX2D(MusicLibrary.instance.explosion_sfxs);
         kaput.position = position;
         kaput.localScale = localScale;
+    }
+
+    public void StartLevel()
+    {
+        if (hasDied)
+            currentLives = startingLives;
+
+        hasDied = false;
+        PantallaCarga.gameObject.SetActive(true);
+        PantallaCarga.SetInteger("state", 2);
+        AudioManager.instance.StopAllSFX();
+        AudioManager.instance.PlaySFX2D(MusicLibrary.instance.door_close_sfx);
+    }
+
+    public void ChangeSceneWithTransition(string sceneName)
+    {
+        AudioManager.instance.StopAll();
+        AudioManager.instance.PlaySFX2D(MusicLibrary.instance.door_open_sfx);
+
+        bool playLoadClip = Random.value < chancePlayLoadSound;
+        float clipLength = 0;
+        float waitTime = 0;
+
+        if (playLoadClip)
+        {
+            clipLength = AudioManager.instance.PlayRandomSFX2D(MusicLibrary.instance.level_load_sfxs).length;
+            waitTime = Mathf.Clamp(Random.Range(0.4f, 1f) * clipLength, 0, 8);
+        }
+        else
+        {
+            clipLength = MusicLibrary.instance.door_open_sfx.length;
+            waitTime = Random.Range(0.9f, 1.2f) * clipLength;
+        }
+
+        PantallaCarga.gameObject.SetActive(true);
+        PantallaCarga.SetInteger("state", 1);
+
+        CoolFunctions.InvokeDelayed(this, waitTime, () =>
+        {
+            ChangeScene(sceneName);
+        });
     }
 
     public void ChangeScene(string sceneName)
@@ -165,6 +277,9 @@ public class GameManager : MonoBehaviour
         {
             yield return null;
         }
+
+        StartLevel();
     }
+
 
 }

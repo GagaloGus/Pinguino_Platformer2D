@@ -6,12 +6,24 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Gabo 1.unity
-    guid: 3a25811d9b7b5fa4da6d5077a40cdc20
+    path: Assets/Scenes/Nivel1.unity
+    guid: d4c1528514226e14096d4eaca24f69de
   - enabled: 1
-    path: Assets/Scenes/Gabo 2.unity
-    guid: ce0d7f646788b29498e72790dcca4cd4
+    path: Assets/Scenes/Nivel1.5.unity
+    guid: 8be8b205e9db64847b5aa9dadf306697
   - enabled: 1
-    path: Assets/Scenes/Gabo 3.unity
-    guid: dca138a4bf0ccd847b915c6fd4fd1f81
+    path: Assets/Scenes/Nivel2.unity
+    guid: 6f46703acee55ae4fa2ed79daad817b9
+  - enabled: 1
+    path: Assets/Scenes/Nivel2.unity
+    guid: 7d54a08078d73d64ebc12d076b05eef8
+  - enabled: 1
+    path: Assets/Scenes/Nivel3.unity
+    guid: 7b4248926a99529439619014deeb6bba
+  - enabled: 1
+    path: Assets/Scenes/Nivel3.unity
+    guid: 5ddacdcf300455f4d99e0e5cde9c52f3
+  - enabled: 1
+    path: Assets/Scenes/Nivel Fin.unity
+    guid: 0722775860c725b4185fd18623f27c69
   m_configObjects: {}

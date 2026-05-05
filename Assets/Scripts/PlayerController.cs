@@ -1,16 +1,19 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public enum PlayerMoveStates
 {
-    Idle, Walk, Run, JumpUp, JumpDown, Slide, AttackMelee, AttackRanged, Crouch
+    Idle, Walk, Run, JumpUp, JumpDown, Slide, AttackMelee, AttackRanged, Crouch, Death
 }
 
 public class PlayerController : MonoBehaviour
 {
     public static PlayerController instance;
+
+    [Header("States")]
+    public PlayerMoveStates playerMoveState;
+    public bool canMove, isGrounded, isAttacking, isRunning, isSliding, isCrouching, hasDied;
 
     [Header("Movement")]
     public float maxSpeed = 3f;
@@ -21,7 +24,6 @@ public class PlayerController : MonoBehaviour
     public float friction = 40f;
     public float slideVelRequired = 10;
     public Vector2 localVel;
-    public float YLevelDeath = -7.5f;
     float inputX;
     Vector2 startPos;
 
@@ -40,10 +42,6 @@ public class PlayerController : MonoBehaviour
     public float runTransitionSpeed = 5f;
     float currentSpeedMult = 1f, lastTargetSpeedMult;
 
-    [Header("States")]
-    public PlayerMoveStates playerMoveState;
-    public bool canMove, isGrounded, isAttacking, isRunning, isSliding, isCrouching;
-
     [Header("Keys")]
     public KeyCode runKey = KeyCode.LeftShift;
     public KeyCode jumpKey = KeyCode.Space;
@@ -60,15 +58,14 @@ public class PlayerController : MonoBehaviour
     Vector2 raycastPosition => transform.position + transform.up * -1 * raycastStartHeight;
 
     [Header("Callbacks")]
-    public Action onStartCrouch, onStopCrouch, onStartSlide;
-    public Action<Enemy> onChargeOnEnemy;
+    public System.Action onStartCrouch, onStopCrouch, onStartSlide;
+    public System.Action<int> onChargeOnEnemy;
 
     Rigidbody2D rb;
     CapsuleCollider2D capsuleCollider;
     SpriteRenderer sprtRenderer;
     Animator animator;
-    Transform SpawnBulletPosition, CenterPos;
-
+    Transform SpawnBulletPosition, CenterPos, Casco, Espada;
 
 
     private void Awake()
@@ -77,11 +74,14 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
-        sprtRenderer = GetComponent<SpriteRenderer>();
+        sprtRenderer = transform.Find("penguin").GetComponent<SpriteRenderer>();
 
         SpawnBulletPosition = transform.Find("spawnBall");
         CenterPos = transform.Find("center");
+        Casco = transform.Find("helmet");
+        Espada = transform.Find("sword");
 
+        //Funciones que se llaman en situaciones especificas
         onStartCrouch = () =>
         {
             AudioManager.instance.PlayLoopedSFX(MusicLibrary.instance.player_crouching_sfx);
@@ -97,12 +97,12 @@ public class PlayerController : MonoBehaviour
             AudioManager.instance.PlaySFX2D(MusicLibrary.instance.player_slide_sfx);
         };
 
-        onChargeOnEnemy = (Enemy enemy) =>
+        onChargeOnEnemy = (int enemyLife) =>
         {
             //No muere por impacto
-            if (enemy.health > dmgChargeAtk)
+            if (enemyLife > dmgChargeAtk)
             {
-                Vector2 bounceDir = new Vector2(CenterPos.position.x - enemy.transform.position.x, 10).normalized;
+                Vector2 bounceDir = new Vector2(transform.localScale.x, 10).normalized;
                 AddForceToDir(bounceDir, 10);
                 AudioManager.instance.PlaySFX2D(MusicLibrary.instance.player_bump_sfx);
             }
@@ -112,6 +112,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         canMove = true;
+        hasDied = false;
         startPos = transform.position;
         rb.gravityScale = gravityScale;
     }
@@ -119,18 +120,23 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Orientacion del collider segun lo que este haciendo el player
+        if (isSliding || isCrouching)
+            capsuleCollider.direction = CapsuleDirection2D.Horizontal;
+        else
+            capsuleCollider.direction = CapsuleDirection2D.Vertical;
+
+        animator.SetInteger("player_states", (int)playerMoveState);
+
+        if (hasDied)
+            return;
+
         inputX = Input.GetAxisRaw("Horizontal");
 
         float targetSpeedMult = 1f;
 
         //Estados de animador y variables
         StateMachine();
-
-        //Orientacion del collider segun lo que este haciendo el player
-        if (isSliding || isCrouching)
-            capsuleCollider.direction = CapsuleDirection2D.Horizontal;
-        else
-            capsuleCollider.direction = CapsuleDirection2D.Vertical;
 
         //Multiplicadores de velocidad
         if (isRunning)
@@ -155,27 +161,26 @@ public class PlayerController : MonoBehaviour
             targetSpeedMult,
             runTransitionSpeed * Time.deltaTime
         );
-
-        if (transform.position.y < YLevelDeath)
-            transform.position = startPos;
-
-        animator.SetInteger("player_states", (int)playerMoveState);
     }
 
     void FixedUpdate()
     {
         //Rayos disparados hacia el suelo
-        RaycastHit2D groundedCast = Physics2D.Raycast(raycastPosition, transform.up * -1, ray_groundedDistance, LayerMask.GetMask("Ground"));
+        RaycastHit2D groundedCast = Physics2D.Raycast(raycastPosition, transform.up * -1, ray_groundedDistance, LayerMask.GetMask("Ground", "CanBeGround"));
+        RaycastHit2D groundCheckCast = Physics2D.Raycast(raycastPosition, transform.up * -1, ray_groundAngleDistance, LayerMask.GetMask("Ground"));
+
         isGrounded = groundedCast.collider != null;
 
-        RaycastHit2D groundCheckCast = Physics2D.Raycast(raycastPosition, transform.up * -1, ray_groundAngleDistance, LayerMask.GetMask("Ground"));
+        if (hasDied)
+            return;
+
         float slopeAngle = Vector2.SignedAngle(groundCheckCast.normal, Vector2.up) * -1;
         transform.rotation = Quaternion.Euler(0f, 0f, slopeAngle);
 
         Move();
 
         //Aplica una fuerza para que el jugador se "pegue" al suelo
-        if (Mathf.Abs(localVel.x) > 2f && isGrounded &&(isRunning || isSliding))
+        if (Mathf.Abs(localVel.x) > 4f && isGrounded && (isRunning || isSliding))
             rb.gravityScale = 0;
         else
             rb.gravityScale = gravityScale;
@@ -255,7 +260,8 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        if (Input.GetKeyDown(attack_RangeKey) && !isAttacking && !isSliding) //Ataque rango que tambien se puede hacer en el aire
+        //Ataque rango que tambien se puede hacer en el aire
+        if (Input.GetKeyDown(attack_RangeKey) && !isAttacking && !isSliding)
         {
             StartCoroutine(AttackCoroutine(PlayerMoveStates.AttackRanged));
         }
@@ -297,12 +303,61 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void Hit(int healthReduce, Vector2 bounceDir)
+    //El jugador ha recibido da�o
+    public void Hit(int healthReduce, Vector2 bounceDir, GameObject hitObject)
     {
-        AddForceToDir(bounceDir);
-        StartCoroutine(IFramesCoroutine(hitInvFramesDuration));
+        GameManager.instance.currentLives -= healthReduce;
+
+        if (GameManager.instance.currentLives <= 0)
+        {
+            Death(hitObject.name, hitObject.transform.position);
+        }
+        else
+        {
+            AddForceToDir(bounceDir);
+            AudioManager.instance.PlayRandomSFX2D(MusicLibrary.instance.player_ow_sfxs);
+            StartCoroutine(IFramesCoroutine(hitInvFramesDuration));
+        }
     }
 
+    //El jugador ha muerto
+    public void Death(string killer, Vector3 killerPos)
+    {
+        GameManager.instance.Death();
+        print($"Morio por: {killer}");
+        CameraController.instance.followPlayer = false;
+        hasDied = true;
+        canMove = false;
+
+        int dirX = (int)Mathf.Sign(transform.position.x - killerPos.x);
+        int multVel = 20;
+        Vector2 bounceDir = new Vector2(dirX, 1f).normalized;
+
+        //Quitar restricciones
+        capsuleCollider.enabled = false;
+        playerMoveState = PlayerMoveStates.Death;
+        rb.constraints = RigidbodyConstraints2D.None;
+
+        //Lanzar y rotar al player
+        rb.velocity = bounceDir * multVel;
+        rb.angularVelocity = -3000;
+        rb.gravityScale = gravityScale;
+
+        //Lanzar el casco y la espada
+        animator.enabled = false;
+        Casco.SetParent(transform.parent);
+        Espada.SetParent(transform.parent);
+
+        Casco.position = transform.position;
+        Espada.position = transform.position;
+
+        Casco.GetComponent<Rigidbody2D>().velocity = new Vector2(dirX * 0.9f, 0.1f) * multVel;
+        Casco.GetComponent<Rigidbody2D>().angularVelocity = Random.Range(-3f, 3f) * 1000;
+        Espada.GetComponent<Rigidbody2D>().velocity = new Vector2(dirX * 0.1f, 0.9f) * multVel;
+        Espada.GetComponent<Rigidbody2D>().angularVelocity = Random.Range(-3f, 3f) * 1000;
+    }
+
+    //Funcion para lanzar al player
     public void AddForceToDir(Vector2 dir, float mult = 10, float frozenTime = 0.3f)
     {
         canMove = false;
@@ -322,11 +377,11 @@ public class PlayerController : MonoBehaviour
             bullet.shootDirection = new Vector2(transform.localScale.x > 0 ? 1 : -1, 1);
             bullet.transform.position = SpawnBulletPosition.position;
 
-            CoolFunctions.PlayerShootSFX();
+            AudioManager.instance.PlayRandomSFX2D(MusicLibrary.instance.player_shoot_sfxs);
         }
         else
         {
-            CoolFunctions.PlayerAttackSFX();
+            AudioManager.instance.PlayRandomSFX2D(MusicLibrary.instance.player_attack_sfxs);
         }
 
         yield return new WaitForSeconds(attackDuration);
@@ -360,16 +415,48 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (iFrameCounter <= 0)
+        if (iFrameCounter <= 0 && !hasDied)
         {
-            if (collision.collider.CompareTag("HurtBox") || collision.collider.GetComponent<Enemy>())
+            if (collision.collider.CompareTag("HurtBox"))
             {
-                Vector2 colliderPoint = collision.collider.bounds.ClosestPoint(transform.position);
+                Hit(1, Vector2.up, collision.collider.gameObject);
+            }
 
-                Vector2 bounceDir = new Vector2(CenterPos.position.x - colliderPoint.x, CenterPos.position.y - colliderPoint.y).normalized;
-                Hit(1, bounceDir);
+            if(collision.collider.TryGetComponent(out Enemy enemy))
+            {
+                enemy.BumpPlayer(10);
+                Vector2 colliderPoint = collision.collider.bounds.ClosestPoint(transform.position);
+                Vector2 bounceDir = new Vector2(CenterPos.position.x - colliderPoint.x, CenterPos.position.y - colliderPoint.y + 5).normalized;
+                Hit(1, bounceDir, collision.collider.gameObject);
             }
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+
+        if (collision.CompareTag("DeathZone"))
+        {
+            Death("The void", Vector3.zero);
+        }
+
+        if (iFrameCounter <= 0 && !hasDied)
+        {
+            if (collision.tag == "BossHitbox")
+            {
+                int dirToLaunch = (int)Mathf.Sign(transform.position.x - collision.transform.parent.position.x);
+                Vector2 bounceDir = Vector2.right * dirToLaunch * 3 + Vector2.up * 3;
+                Hit(2, bounceDir, collision.gameObject);
+            }
+            else if (collision.tag == "bulletEnemy")
+            {
+                Vector2 colliderPoint = collision.bounds.ClosestPoint(transform.position);
+                Vector2 bounceDir = new Vector2(CenterPos.position.x - colliderPoint.x, CenterPos.position.y - colliderPoint.y + 5).normalized;
+                Hit(1, bounceDir, collision.gameObject);
+                collision.gameObject.SetActive(false);
+            }
+        }
+
     }
 
 #if UNITY_EDITOR
@@ -377,11 +464,6 @@ public class PlayerController : MonoBehaviour
     {
         if (rb == null)
             rb = GetComponent<Rigidbody2D>();
-
-        if(capsuleCollider == null)
-            capsuleCollider = GetComponent<CapsuleCollider2D>();
-
-        
 
         if (CenterPos == null)
             CenterPos = transform.Find("center");

@@ -228,8 +228,8 @@ MonoBehaviour:
   muteSfx: 0
   activeAudioSources: []
   audioPool: {fileID: 2608982549939349993}
-  volumeMusic: 0.44
-  volumeSFX: 0.632
+  volumeMusic: 0.537
+  volumeSFX: 0.553
 --- !u!114 &5085540492754293716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,9 +242,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d1bb01c6a6af8a43b8598c2b8e0c182, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level1_song: {fileID: 8300000, guid: a870fff6e28f8fa4a8027ba884d5c54c, type: 3}
-  level2_song: {fileID: 8300000, guid: 84a4da929b002ef44b011d2e6aa325a6, type: 3}
-  level3_song: {fileID: 8300000, guid: 0075d5c29e0447f4e95182a6b7a8c946, type: 3}
+  level_themes:
+  - {fileID: 8300000, guid: a870fff6e28f8fa4a8027ba884d5c54c, type: 3}
+  - {fileID: 8300000, guid: 68846fe46a8146f46b6f8c0cfccc150b, type: 3}
+  - {fileID: 8300000, guid: be7a674c59397464985d6467efbeead8, type: 3}
   player_attack_sfxs:
   - {fileID: 8300000, guid: c5f3cf89d9ad277449baa4b37a6e96a2, type: 3}
   - {fileID: 8300000, guid: 53046da780bb86845bbdf9c9d58138c5, type: 3}
@@ -256,10 +257,21 @@ MonoBehaviour:
   player_slide_sfx: {fileID: 8300000, guid: 68314c203da4858458e6aeaba1487cac, type: 3}
   player_bump_sfx: {fileID: 8300000, guid: 8ce023403108f8b41b27ebf80ebab6f0, type: 3}
   player_kill_sfx: {fileID: 8300000, guid: 3d860e912721bda40bce0b58a453af59, type: 3}
+  player_ow_sfxs:
+  - {fileID: 8300000, guid: b55f5547eee2d28449d95683ee08bc36, type: 3}
+  - {fileID: 8300000, guid: 95e1034282a0a5a45bb3d30d39dfc33d, type: 3}
+  - {fileID: 8300000, guid: 92066247b30d70d448cf3f4eee8ff0b4, type: 3}
+  - {fileID: 8300000, guid: 345f2f5178283aa40b0fff1bf8670fb3, type: 3}
+  - {fileID: 8300000, guid: 0b4a968f19cfb4a419abd9617d7ecff7, type: 3}
   player_die_sfxs:
-  - {fileID: 8300000, guid: fc59044d08269b84abb6c58121a18e2c, type: 3}
+  - {fileID: 8300000, guid: dabf07f5fb8444f44bdd3d9d8e551dd2, type: 3}
+  - {fileID: 8300000, guid: 238fcb5e47643e042954bf595ad39fef, type: 3}
   - {fileID: 8300000, guid: fb9baac7f1fbc9c478ac1be2390ca20b, type: 3}
-  - {fileID: 8300000, guid: 5bb23f4613ba83b40aa298d429d42d38, type: 3}
+  - {fileID: 8300000, guid: 0625aa16956ce234e9aaa5b844f401a9, type: 3}
+  - {fileID: 8300000, guid: d0f12bdb4fbd2b0488820812077524a5, type: 3}
+  - {fileID: 8300000, guid: fc59044d08269b84abb6c58121a18e2c, type: 3}
+  - {fileID: 8300000, guid: 1feaa51a3f594b242b8286af2c35cab9, type: 3}
+  - {fileID: 8300000, guid: afe9cf0ca02562146a08b1b78a23bf66, type: 3}
   enemy_death_sfxs:
   - {fileID: 8300000, guid: 817e57a2152719049964262ca2cea480, type: 3}
   - {fileID: 8300000, guid: 314b4ccd7895c5e42944ad02f25dcfa9, type: 3}
@@ -267,6 +279,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b8a2d67c257ca4942abe53d2f42cd8d1, type: 3}
   - {fileID: 8300000, guid: df07ddbe4a134e941b5eee8c7e1bec42, type: 3}
   - {fileID: 8300000, guid: d2d6770e7d293b64bafa41b3d9431eed, type: 3}
+  - {fileID: 8300000, guid: b3c014a71f0867441aa68bd0e91e4103, type: 3}
   enemy_ow_sfx: {fileID: 8300000, guid: f22c0194529801748b31d71bc2e4ee2f, type: 3}
   enemy_kill_sfx: {fileID: 8300000, guid: 3d860e912721bda40bce0b58a453af59, type: 3}
   level_load_sfxs:
@@ -275,9 +288,15 @@ MonoBehaviour:
   - {fileID: 8300000, guid: eabee24fc6451444788a11bdc2d683d3, type: 3}
   - {fileID: 8300000, guid: b8a2d67c257ca4942abe53d2f42cd8d1, type: 3}
   - {fileID: 8300000, guid: a84e642d25d6bd6429668d538fef8fbd, type: 3}
+  - {fileID: 8300000, guid: a5594f0e8079f1f438add023a1a283e7, type: 3}
+  - {fileID: 8300000, guid: a5eb631baa214dc46946b7917dade2d0, type: 3}
+  - {fileID: 8300000, guid: e901466411759194f86087fca2d13186, type: 3}
   explosion_sfxs:
   - {fileID: 8300000, guid: 314b4ccd7895c5e42944ad02f25dcfa9, type: 3}
   confetti_sfx: {fileID: 8300000, guid: d3e4d74e6d317844b8494bd1f9e1ea64, type: 3}
+  door_open_sfx: {fileID: 8300000, guid: 1b795dc4dadf83747816edf09c5fe95e, type: 3}
+  door_close_sfx: {fileID: 8300000, guid: 7f3f43e674d40934eb1fd4003d06c77e, type: 3}
+  lego_breaking_sfx: {fileID: 8300000, guid: b8a2d67c257ca4942abe53d2f42cd8d1, type: 3}
   spawn_sfx: {fileID: 8300000, guid: 81b679ce9647a854585d02f6f66fbd7a, type: 3}
   BIG_spawn_sfx: {fileID: 8300000, guid: 0625aa16956ce234e9aaa5b844f401a9, type: 3}
   switch_on_sfx: {fileID: 8300000, guid: ea02ecec18caeae41983e512cd4e8e0b, type: 3}

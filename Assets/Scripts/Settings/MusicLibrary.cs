@@ -8,15 +8,14 @@ public class MusicLibrary : MonoBehaviour
 
     [Header("-------- CANCIONES --------")]
     [Header("Canciones de mundo")]
-    public AudioClip level1_song;
-    public AudioClip level2_song;
-    public AudioClip level3_song;
+    public AudioClip[] level_themes;
 
     [Header("-------- SOUND EFFECTS --------")]
     [Header("player sfx")]
     public AudioClip[] player_attack_sfxs;
     public AudioClip[] player_shoot_sfxs;
     public AudioClip player_crouching_sfx, player_slide_sfx, player_bump_sfx, player_kill_sfx;
+    public AudioClip[] player_ow_sfxs;
     public AudioClip[] player_die_sfxs;
 
     [Header("enemy sfx")]
@@ -29,6 +28,8 @@ public class MusicLibrary : MonoBehaviour
     [Header("otros sfx")]
     public AudioClip[] explosion_sfxs;
     public AudioClip confetti_sfx;
+    public AudioClip door_open_sfx, door_close_sfx;
+    public AudioClip lego_breaking_sfx;
     public AudioClip spawn_sfx;
     public AudioClip BIG_spawn_sfx;
     public AudioClip switch_on_sfx;
@@ -38,5 +39,10 @@ public class MusicLibrary : MonoBehaviour
     private void Awake()
     {
         instance = this;
+    }
+
+    public AudioClip GetRandomClip(AudioClip[] clips)
+    {
+        return clips[Random.Range(0, clips.Length)];
     }
 }

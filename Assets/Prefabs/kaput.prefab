@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4761321672178652505}
   - component: {fileID: 633895733093856389}
-  - component: {fileID: 6168282300853127909}
   - component: {fileID: -5393102200465145396}
+  - component: {fileID: 4907202650066521319}
   m_Layer: 0
   m_Name: kaput
   m_TagString: Untagged
@@ -74,7 +74,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 15
   m_Sprite: {fileID: -275904128, guid: a2754b2155edf5b419bde29669c751fe, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -86,7 +86,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &6168282300853127909
+--- !u!114 &-5393102200465145396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4718461704227563348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1394dbb538a2a1f4fb54a19f55b5bb24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!95 &4907202650066521319
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
@@ -107,15 +119,3 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &-5393102200465145396
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4718461704227563348}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1394dbb538a2a1f4fb54a19f55b5bb24, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

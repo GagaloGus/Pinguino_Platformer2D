@@ -7,6 +7,12 @@ TagManager:
   - PlayerAttackBox
   - HurtBox
   - PantallaCarga
+  - DeathZone
+  - Obstacle
+  - Enemy
+  - BossHitbox
+  - StoneBoss
+  - bulletEnemy
   layers:
   - Default
   - TransparentFX
@@ -14,9 +20,9 @@ TagManager:
   - Ground
   - Water
   - UI
+  - CanBeGround
   - 
-  - 
-  - 
+  - Player
   - 
   - 
   - 
@@ -43,4 +49,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Ground
+    uniqueID: 61421921
     locked: 0

@@ -13,4 +13,16 @@ public class AnimationEvents : MonoBehaviour
     {
         Destroy(gameObject);
     }
+
+    public void KaboomSelf(float sizeInc = 1)
+    {
+        AudioManager.instance.StopAllSFX();
+        GameManager.instance.CreateExplosion(transform.position, Vector2.one * sizeInc, true);
+        Destroy(gameObject);
+    }
+
+    public void EnableGoNextLevel()
+    {
+        FindObjectOfType<PasarNivel>().canGoNextLevel = true;
+    }
 }

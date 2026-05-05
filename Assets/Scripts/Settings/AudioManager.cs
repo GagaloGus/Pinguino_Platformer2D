@@ -37,6 +37,18 @@ public class AudioManager : MonoBehaviour
         ambientSource.volume = volumeMusic;
     }
 
+    public void PlayLevelSong(int id)
+    {
+        try
+        {
+            PlayAmbientMusic(MusicLibrary.instance.level_themes[id]);
+        }
+        catch
+        {
+            //No se reproduzca ninguna
+        }
+    }
+
     public void SetMusicVolume(float volume)
     {
         volumeMusic = Mathf.Clamp01(volume);
@@ -70,6 +82,13 @@ public class AudioManager : MonoBehaviour
     public void PlaySFX2D(AudioClip clip, float volume = 1)
     {
         PlaySFX(clip, Camera.main.transform.position, false, volume);
+    }
+
+    public AudioClip PlayRandomSFX2D(AudioClip[] clips, float volume = 1)
+    {
+        AudioClip clip = clips[Random.Range(0, clips.Length)];
+        PlaySFX2D(clip);
+        return clip;
     }
 
     public void PlaySFX3D(AudioClip clip, Vector3 position, float volume = 1)
@@ -111,7 +130,6 @@ public class AudioManager : MonoBehaviour
         StopCoroutine(nameof(FadeOutInAmbientMusic));
 
         StartCoroutine(FadeOutInAmbientMusic(clip, volume));
-        print($"PLAY F ambient: {clip.name}");
     }
 
     public void StopAmbientMusic()
@@ -150,7 +168,6 @@ public class AudioManager : MonoBehaviour
 
     IEnumerator FadeOutInAmbientMusic(AudioClip clip, float volume = 1)
     {
-        print($"Fade in ambient START: {clip.name}");
         //Observa si se esta reproduciendo alguna cancion
         if (ambientSource.isPlaying)
         {
@@ -183,7 +200,6 @@ public class AudioManager : MonoBehaviour
         }
 
         AudioListener.volume = 1;
-        print($"Fade in ambient FINISH: {clip.name}");
     }
 
     public void StopAllSFX()
@@ -193,16 +209,13 @@ public class AudioManager : MonoBehaviour
             source.Stop();
             source.gameObject.SetActive(false);
         }
+
+        StopLoopedSFX();
     }
 
     public void StopAll()
     {
-        foreach (AudioSource source in activeAudioSources)
-        {
-            source.Stop();
-            source.gameObject.SetActive(false);
-        }
-
+        StopAllSFX();
         ambientSource.Stop();
         StopAllCoroutines();
         AudioListener.volume = 1;

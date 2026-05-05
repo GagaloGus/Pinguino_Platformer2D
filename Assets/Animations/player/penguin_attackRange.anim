@@ -52,7 +52,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: {x: -0.575, y: 0.48700002, z: 0}
+        value: {x: -0.575, y: 1.487, z: 0}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -68,7 +68,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: {x: -0.7500001, y: -0.37000003, z: 0}
+        value: {x: -0.7500001, y: 0.63, z: 0}
         inSlope: {x: 0, y: 0, z: 0}
         outSlope: {x: 0, y: 0, z: 0}
         tangentMode: 0
@@ -87,7 +87,7 @@ AnimationClip:
     - time: 0
       value: {fileID: 21300000, guid: 371145ea5533f274aa6550d168f1bf4c, type: 3}
     attribute: m_Sprite
-    path: 
+    path: penguin
     classID: 212
     script: {fileID: 0}
     flags: 2
@@ -99,7 +99,7 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 0
+      path: 3854672160
       attribute: 0
       script: {fileID: 0}
       typeID: 212
@@ -193,7 +193,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.48700002
+        value: 1.487
         inSlope: 0
         outSlope: 0
         tangentMode: 136
@@ -319,7 +319,7 @@ AnimationClip:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: -0.37000003
+        value: 0.63
         inSlope: 0
         outSlope: 0
         tangentMode: 136
